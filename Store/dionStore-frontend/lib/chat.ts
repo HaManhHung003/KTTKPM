@@ -1,107 +1,131 @@
-import Cookies from 'js-cookie'
-import api from '@/lib/api'
-import type { ChatMessage, ChatRoom, ChatSocketEvent } from '@/lib/types'
+import { Client, StompSubscription } from '@stomp/stompjs';
+import SockJS from 'sockjs-client';
+import Cookies from 'js-cookie';
 
-const WS_BASE_URL = process.env.NEXT_PUBLIC_WS_BASE_URL ?? 'ws://localhost:8080/ws/chat'
+const SOCKET_URL = process.env.NEXT_PUBLIC_API_BASE_URL
+  ? process.env.NEXT_PUBLIC_API_BASE_URL.replace('/api', '/ws')
+  : 'http://localhost:8080/ws';
 
-function readAccessToken() {
-  return Cookies.get('accessToken')
-}
+let stompClient: Client | null = null;
+let currentSubscriptions: Map<string, StompSubscription> = new Map();
+let pendingSubscriptions: Map<string, (msg: any) => void> = new Map();
+let isConnecting = false;
 
-function toWsUrl(roomId: string) {
-  const token = readAccessToken()
-  const url = new URL(WS_BASE_URL)
-  url.searchParams.set('roomId', roomId)
-  if (token) {
-    url.searchParams.set('token', token)
-  }
-  return url.toString()
-}
+export const connectChat = (
+  topicIdentifier: number | string,
+  onMessageReceived: (msg: any) => void,
+  onConnected?: () => void,
+  onError?: (err: any) => void
+) => {
+  const topicString = typeof topicIdentifier === 'number' 
+    ? `/topic/chat.${topicIdentifier}` 
+    : `/topic/${topicIdentifier}`;
 
-export async function getOrCreateCustomerSupportRoom() {
-  const res = await api.post<ChatRoom>('/chat/rooms/customer-support')
-  return res.data
-}
-
-export async function getAdminRooms() {
-  const res = await api.get<ChatRoom[]>('/chat/rooms')
-  return res.data
-}
-
-export async function getRoomMessages(roomId: string) {
-  const res = await api.get<ChatMessage[]>(`/chat/rooms/${roomId}/messages`)
-  return res.data
-}
-
-export async function sendMessage(roomId: string, content: string) {
-  const res = await api.post<ChatMessage>(`/chat/rooms/${roomId}/messages`, { content })
-  return res.data
-}
-
-export function connectRoom(roomId: string, handlers: {
-  onOpen?: () => void
-  onMessage?: (message: ChatMessage) => void
-  onError?: (errorMessage: string) => void
-  onClose?: () => void
-}) {
-  const socket = new WebSocket(toWsUrl(roomId))
-
-  socket.onopen = () => {
-    handlers.onOpen?.()
-    const joinEvent: ChatSocketEvent = {
-      type: 'join',
-      payload: { roomId },
+  // If already fully connected, subscribe immediately
+  if (stompClient?.active) {
+    if (currentSubscriptions.has(topicString)) {
+      currentSubscriptions.get(topicString)?.unsubscribe();
     }
-    socket.send(JSON.stringify(joinEvent))
-  }
-
-  socket.onmessage = (event) => {
-    try {
-      const data = JSON.parse(event.data) as ChatSocketEvent | ChatMessage
-
-      // Support both raw message payload and wrapped socket event formats.
-      if ('type' in data) {
-        if (data.type === 'message' && data.payload) {
-          handlers.onMessage?.(data.payload as ChatMessage)
-        }
-        if (data.type === 'error') {
-          handlers.onError?.('Realtime connection reported an error.')
-        }
-        return
+    const sub = stompClient.subscribe(topicString, (message) => {
+      if (message.body) {
+        onMessageReceived(JSON.parse(message.body));
       }
-
-      handlers.onMessage?.(data)
-    } catch {
-      handlers.onError?.('Cannot parse realtime message payload.')
-    }
+    });
+    currentSubscriptions.set(topicString, sub);
+    if (onConnected) onConnected();
+    return stompClient;
   }
 
-  socket.onerror = () => {
-    handlers.onError?.('Realtime socket failed to connect.')
+  // Not active yet, add to pending list
+  pendingSubscriptions.set(topicString, onMessageReceived);
+
+  // If already connecting, just wait for the onConnect event
+  if (isConnecting || stompClient) {
+    return stompClient;
   }
 
-  socket.onclose = () => {
-    handlers.onClose?.()
-  }
+  // First time connecting
+  isConnecting = true;
+  const token = Cookies.get('accessToken');
 
-  const sendRealtimeMessage = (content: string) => {
-    if (socket.readyState !== WebSocket.OPEN) {
-      return false
-    }
-
-    const event: ChatSocketEvent = {
-      type: 'message',
-      payload: { roomId, content },
-    }
-    socket.send(JSON.stringify(event))
-    return true
-  }
-
-  return {
-    socket,
-    sendRealtimeMessage,
-    disconnect: () => {
-      socket.close()
+  stompClient = new Client({
+    webSocketFactory: () => new SockJS(SOCKET_URL),
+    connectHeaders: {
+      Authorization: `Bearer ${token || ''}`,
     },
+    reconnectDelay: 5000,
+    heartbeatIncoming: 4000,
+    heartbeatOutgoing: 4000,
+  });
+
+  stompClient.onConnect = (frame) => {
+    console.log('Connected STOMP');
+    isConnecting = false;
+    
+    // Subscribe to all pending topics now that we are connected
+    pendingSubscriptions.forEach((callback, topic) => {
+      if (currentSubscriptions.has(topic)) {
+        currentSubscriptions.get(topic)?.unsubscribe();
+      }
+      const sub = stompClient!.subscribe(topic, (message) => {
+        if (message.body) {
+          callback(JSON.parse(message.body));
+        }
+      });
+      currentSubscriptions.set(topic, sub);
+    });
+    pendingSubscriptions.clear();
+
+    if (onConnected) onConnected();
+  };
+
+  stompClient.onStompError = (frame) => {
+    console.error('Broker reported error: ' + frame.headers['message']);
+    console.error('Additional details: ' + frame.body);
+    isConnecting = false;
+    if (onError) onError(frame);
+  };
+
+  stompClient.onWebSocketClose = () => {
+    isConnecting = false;
+  };
+
+  stompClient.activate();
+
+  return stompClient;
+};
+
+export const unsubscribeTopic = (topicIdentifier: number | string) => {
+  const topicString = typeof topicIdentifier === 'number' 
+    ? `/topic/chat.${topicIdentifier}` 
+    : `/topic/${topicIdentifier}`;
+    
+  if (currentSubscriptions.has(topicString)) {
+    currentSubscriptions.get(topicString)?.unsubscribe();
+    currentSubscriptions.delete(topicString);
   }
-}
+  if (pendingSubscriptions.has(topicString)) {
+    pendingSubscriptions.delete(topicString);
+  }
+};
+
+export const disconnectChat = () => {
+  if (stompClient) {
+    stompClient.deactivate();
+    stompClient = null;
+    isConnecting = false;
+    currentSubscriptions.clear();
+    pendingSubscriptions.clear();
+  }
+};
+
+export const sendChatMessage = (userId: number, message: string) => {
+  if (stompClient && stompClient.active) {
+    stompClient.publish({
+      destination: '/app/chat.send',
+      body: JSON.stringify({ userId, message }),
+    });
+    return true;
+  }
+  return false;
+};

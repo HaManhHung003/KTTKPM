@@ -50,6 +50,10 @@ public class SecurityConfig {
                         // Cho phép tất cả OPTIONS preflight requests (CORS)
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers("/api/auth/**").permitAll()
+                        // WebSocket handshake endpoints
+                        .requestMatchers("/ws/**").permitAll()
+                        // Chat endpoints
+                        .requestMatchers("/api/chat/**").authenticated()
                         // Public endpoints
                         .requestMatchers(HttpMethod.GET, "/api/categories/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/products/**").permitAll()

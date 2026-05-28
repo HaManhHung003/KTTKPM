@@ -11,20 +11,12 @@ export interface AuthResponse {
   refreshToken: string;
 }
 
-export interface ChatRoom {
-  id: string;
-  customerEmail: string;
-  adminEmail?: string;
-  status?: 'open' | 'closed';
-  updatedAt?: string;
-}
-
 export interface ChatMessage {
-  id: string;
-  roomId: string;
-  senderEmail: string;
-  senderRole: 'Admin' | 'Customer';
-  content: string;
+  id: number;
+  userId: number;
+  message: string;
+  senderRole: string; // 'admin' or 'customer'
+  isRead: boolean;
   createdAt: string;
 }
 

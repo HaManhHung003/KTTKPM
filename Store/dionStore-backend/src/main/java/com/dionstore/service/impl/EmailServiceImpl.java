@@ -46,7 +46,7 @@ public class EmailServiceImpl implements EmailService {
             content.append("<h3>Thông tin đơn hàng:</h3>");
             content.append("<p><strong>Mã đơn hàng:</strong> #").append(order.getId()).append("</p>");
             content.append("<p><strong>Ngày đặt:</strong> ").append(order.getCreatedAt().format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"))).append("</p>");
-            content.append("<p><strong>Tổng tiền:</strong> ").append(String.format("%,.0f", order.getTotal())).append("₫</p>");
+            content.append("<p><strong>Tổng tiền:</strong> ").append(String.format("%,.0f", order.getTotalSellingAmount())).append("₫</p>");
 
             content.append("<h3>Địa chỉ nhận hàng:</h3>");
             content.append("<p>").append(order.getAddress()).append("</p>");
@@ -60,8 +60,8 @@ public class EmailServiceImpl implements EmailService {
                 content.append("<tr>");
                 content.append("<td>").append(detail.getProduct().getName()).append("</td>");
                 content.append("<td style='text-align: center;'>").append(detail.getQuantity()).append("</td>");
-                content.append("<td style='text-align: right;'>").append(String.format("%,.0f", detail.getPrice())).append("₫</td>");
-                content.append("<td style='text-align: right;'>").append(String.format("%,.0f", detail.getPrice().doubleValue() * detail.getQuantity())).append("₫</td>");
+                content.append("<td style='text-align: right;'>").append(String.format("%,.0f", detail.getSellingPrice())).append("₫</td>");
+                content.append("<td style='text-align: right;'>").append(String.format("%,.0f", detail.getSellingPrice().doubleValue() * detail.getQuantity())).append("₫</td>");
                 content.append("</tr>");
             }
             content.append("</tbody></table>");

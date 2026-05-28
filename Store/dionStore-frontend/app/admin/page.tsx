@@ -1,8 +1,11 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import api from '@/lib/api'
+import { connectChat, unsubscribeTopic } from '@/lib/chat'
+import type { ChatMessage } from '@/lib/types'
+import AdminChatPanel from '@/components/AdminChatPanel'
 import { Button } from '@/components/ui/button'
 import {
   Table,
@@ -57,6 +60,7 @@ import {
   TrendingUp,
   DollarSign,
   User,
+  MessageCircle,
 } from 'lucide-react'
 import { toast } from 'sonner'
 import Cookies from 'js-cookie'
@@ -137,8 +141,17 @@ export default function AdminPage() {
   const [deleteTarget, setDeleteTarget] = useState<Product | null>(null)
   const [currentProduct, setCurrentProduct] = useState<Product | null>(null)
   const [formState, setFormState] = useState<FormState>(emptyForm)
-  const [activeTab, setActiveTab] = useState<'statistics' | 'products' | 'categories' | 'orders'>('statistics')
+  const [activeTab, setActiveTab] = useState<'statistics' | 'products' | 'categories' | 'orders' | 'chat'>('statistics')
   const [chartFilter, setChartFilter] = useState<'week' | 'month' | 'year'>('week')
+  const [unreadChatCount, setUnreadChatCount] = useState(0)
+  const activeTabRef = useRef(activeTab)
+
+  useEffect(() => {
+    activeTabRef.current = activeTab
+    if (activeTab === 'chat') {
+      setUnreadChatCount(0)
+    }
+  }, [activeTab])
 
   // Category CRUD state
   const [isCatDialogOpen, setIsCatDialogOpen] = useState(false)
@@ -154,6 +167,36 @@ export default function AdminPage() {
     fetchProducts()
     fetchCategories()
     fetchOrders()
+
+    // Global Admin Chat Notification Listener
+    connectChat(
+      'admin',
+      (msg: ChatMessage) => {
+        if (msg.senderRole === 'customer') {
+          if (activeTabRef.current !== 'chat') {
+            setUnreadChatCount(prev => prev + 1)
+          }
+          toast(`Tin nhắn từ khách hàng`, {
+            description: msg.message,
+            action: {
+              label: 'Xem',
+              onClick: () => setActiveTab('chat')
+            }
+          });
+        }
+      },
+      () => console.log('Connected to admin global notifications')
+    )
+
+    // Poll for new orders every 30 seconds
+    const orderInterval = setInterval(() => {
+      fetchOrders()
+    }, 30000)
+
+    return () => {
+      unsubscribeTopic('admin');
+      clearInterval(orderInterval);
+    }
   }, [])
 
   // ───── API Calls ─────
@@ -465,14 +508,39 @@ export default function AdminPage() {
             </button>
             <button
               onClick={() => setActiveTab('orders')}
-              className={`w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-medium transition-all ${
+              className={`w-full flex items-center justify-between px-4 py-2.5 rounded-xl text-sm font-medium transition-all ${
                 activeTab === 'orders'
                   ? 'bg-orange-500/20 text-orange-400 border border-orange-500/30'
                   : 'text-gray-500 hover:text-gray-900 hover:bg-gray-50'
               }`}
             >
-              <ShoppingBag className="w-4 h-4" />
-              Đơn hàng
+              <div className="flex items-center gap-3">
+                <ShoppingBag className="w-4 h-4" />
+                Đơn hàng
+              </div>
+              {pendingOrdersCount > 0 && (
+                <div className="bg-red-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full animate-pulse">
+                  {pendingOrdersCount}
+                </div>
+              )}
+            </button>
+            <button
+              onClick={() => setActiveTab('chat')}
+              className={`w-full flex items-center justify-between px-4 py-2.5 rounded-xl text-sm font-medium transition-all ${
+                activeTab === 'chat'
+                  ? 'bg-green-500/20 text-green-500 border border-green-500/30'
+                  : 'text-gray-500 hover:text-gray-900 hover:bg-gray-50'
+              }`}
+            >
+              <div className="flex items-center gap-3">
+                <MessageCircle className="w-4 h-4" />
+                Chat Hỗ trợ
+              </div>
+              {unreadChatCount > 0 && (
+                <div className="bg-red-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full animate-bounce">
+                  {unreadChatCount}
+                </div>
+              )}
             </button>
           </nav>
 
@@ -496,7 +564,8 @@ export default function AdminPage() {
               <h1 className="text-gray-900 font-semibold text-lg">
                 {activeTab === 'statistics' ? 'Tổng quan Thống kê' : 
                  activeTab === 'products' ? 'Quản lý Sản phẩm' : 
-                 activeTab === 'categories' ? 'Quản lý Danh mục' : 'Quản lý Đơn hàng'}
+                 activeTab === 'categories' ? 'Quản lý Danh mục' : 
+                 activeTab === 'chat' ? 'Hỗ trợ khách hàng' : 'Quản lý Đơn hàng'}
               </h1>
               <p className="text-gray-500 text-sm">dionStore Admin Dashboard</p>
             </div>
@@ -717,6 +786,11 @@ export default function AdminPage() {
                   <div className="text-xs text-gray-500 mt-1">{categories.length} danh mục</div>
                 </div>
               </div>
+            )}
+
+            {/* ─── CHAT TAB ─── */}
+            {activeTab === 'chat' && (
+              <AdminChatPanel />
             )}
 
             {/* ─── PRODUCTS TAB ─── */}

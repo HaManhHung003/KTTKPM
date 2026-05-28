@@ -61,7 +61,7 @@ api.interceptors.response.use(
         // Refresh failed, logout user
         Cookies.remove('accessToken');
         Cookies.remove('refreshToken');
-        if (typeof window !== 'undefined') {
+        if (typeof window !== 'undefined' && window.location.pathname !== '/login' && window.location.pathname !== '/register') {
           window.location.href = '/login';
         }
         return Promise.reject(refreshError);
