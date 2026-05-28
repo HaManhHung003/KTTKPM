@@ -7,7 +7,7 @@ import com.dionstore.entity.Product;
 import com.dionstore.entity.User;
 import com.dionstore.repository.OrderRepository;
 import com.dionstore.repository.ProductRepository;
-// import com.dionstore.service.EmailService; // Temporarily remove
+import com.dionstore.service.EmailService;
 import com.dionstore.service.OrderService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,13 +20,12 @@ public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
     private final ProductRepository productRepository;
-    // private final EmailService emailService; // Temporarily remove
+    private final EmailService emailService;
 
-    // Modified constructor
-    public OrderServiceImpl(OrderRepository orderRepository, ProductRepository productRepository) {
+    public OrderServiceImpl(OrderRepository orderRepository, ProductRepository productRepository, EmailService emailService) {
         this.orderRepository = orderRepository;
         this.productRepository = productRepository;
-        // this.emailService = null; // Temporarily remove
+        this.emailService = emailService;
     }
 
     @Override
@@ -58,12 +57,11 @@ public class OrderServiceImpl implements OrderService {
         order.setDetails(details);
         Order savedOrder = orderRepository.save(order);
 
-        // Temporarily comment out email sending
-        // try {
-        //     emailService.sendOrderConfirmation(savedOrder);
-        // } catch (Exception e) {
-        //     System.err.println("Failed to send order confirmation email: " + e.getMessage());
-        // }
+        try {
+            emailService.sendOrderConfirmation(savedOrder);
+        } catch (Exception e) {
+            System.err.println("Failed to send order confirmation email: " + e.getMessage());
+        }
 
         return savedOrder;
     }

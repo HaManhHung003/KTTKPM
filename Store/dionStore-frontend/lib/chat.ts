@@ -22,7 +22,7 @@ export const connectChat = (
     : `/topic/${topicIdentifier}`;
 
   // If already fully connected, subscribe immediately
-  if (stompClient?.active) {
+  if (stompClient?.connected) {
     if (currentSubscriptions.has(topicString)) {
       currentSubscriptions.get(topicString)?.unsubscribe();
     }
@@ -120,7 +120,7 @@ export const disconnectChat = () => {
 };
 
 export const sendChatMessage = (userId: number, message: string) => {
-  if (stompClient && stompClient.active) {
+  if (stompClient && stompClient.connected) {
     stompClient.publish({
       destination: '/app/chat.send',
       body: JSON.stringify({ userId, message }),
