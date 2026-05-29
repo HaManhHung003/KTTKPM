@@ -6,6 +6,7 @@ import api from '@/lib/api'
 import { connectChat, unsubscribeTopic } from '@/lib/chat'
 import type { ChatMessage } from '@/lib/types'
 import AdminChatPanel from '@/components/AdminChatPanel'
+import AiChatBox from './components/AiChatBox'
 import { Button } from '@/components/ui/button'
 import {
   Table,
@@ -1435,6 +1436,7 @@ export default function AdminPage() {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+      <AiChatBox />
     </div>
   )
 }
