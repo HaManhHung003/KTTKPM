@@ -45,6 +45,10 @@ public class OrderServiceImpl implements OrderService {
             Product product = productRepository.findById(itemRequest.getProductId())
                     .orElseThrow(() -> new RuntimeException("Product not found: " + itemRequest.getProductId()));
 
+            if (product.getQuantity() < itemRequest.getQuantity()) {
+                throw new RuntimeException("Không đủ số lượng trong kho cho sản phẩm: " + product.getName());
+            }
+
             OrderDetail detail = new OrderDetail();
             detail.setOrder(order);
             detail.setProduct(product);
@@ -88,6 +92,36 @@ public class OrderServiceImpl implements OrderService {
     public Order updateOrderStatus(Long id, String status) {
         Order order = orderRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Order not found"));
+        String oldStatus = order.getStatus();
+        
+        boolean isNewStatusActive = "confirmed".equalsIgnoreCase(status) || "shipping".equalsIgnoreCase(status) || "completed".equalsIgnoreCase(status);
+        boolean isOldStatusActive = "confirmed".equalsIgnoreCase(oldStatus) || "shipping".equalsIgnoreCase(oldStatus) || "completed".equalsIgnoreCase(oldStatus);
+
+        // Nếu chuyển từ trạng thái chưa trừ (pending) sang trạng thái được duyệt (confirmed/shipping/completed) thì tiến hành trừ kho
+        if (isNewStatusActive && !isOldStatusActive) {
+            for (OrderDetail detail : order.getDetails()) {
+                Product product = detail.getProduct();
+                if (product != null) {
+                    if (product.getQuantity() < detail.getQuantity()) {
+                        throw new RuntimeException("Không đủ số lượng trong kho cho sản phẩm: " + product.getName());
+                    }
+                    product.setQuantity(product.getQuantity() - detail.getQuantity());
+                    productRepository.save(product);
+                }
+            }
+        }
+
+        // Nếu chuyển từ trạng thái đã duyệt (đã trừ kho) sang hủy (cancelled) thì tiến hành hoàn lại kho
+        if ("cancelled".equalsIgnoreCase(status) && isOldStatusActive) {
+            for (OrderDetail detail : order.getDetails()) {
+                Product product = detail.getProduct();
+                if (product != null) {
+                    product.setQuantity(product.getQuantity() + detail.getQuantity());
+                    productRepository.save(product);
+                }
+            }
+        }
+        
         order.setStatus(status);
         return orderRepository.save(order);
     }

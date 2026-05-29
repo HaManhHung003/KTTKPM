@@ -179,7 +179,7 @@ VALUES ('System Admin', 'admin@gmail.com', 'admin123', '0999999999', 'Hồ Chí 
 
 -- ================= 2. CATEGORIES =================
 CREATE TABLE categories (
-    id INT AUTO_INCREMENT PRIMARY KEY,
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL UNIQUE,
     description TEXT
 );
@@ -187,14 +187,14 @@ CREATE TABLE categories (
 
 -- ================= 3. PRODUCTS =================
 CREATE TABLE products (
-    id INT AUTO_INCREMENT PRIMARY KEY,
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255) NOT NULL,
     cost_price DECIMAL(10, 2) NOT NULL DEFAULT 0.00,    -- Giá gốc
     selling_price DECIMAL(10, 2) NOT NULL DEFAULT 0.00, -- Giá bán
     quantity INT NOT NULL DEFAULT 0,                     -- Số lượng tồn kho
     description TEXT,
     image VARCHAR(255) DEFAULT 'default-product.jpg',
-    category_id INT,
+    category_id BIGINT,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (category_id) REFERENCES categories (id) ON DELETE SET NULL
 );
@@ -202,7 +202,7 @@ CREATE TABLE products (
 
 -- ================= 4. ORDERS =================
 CREATE TABLE orders (
-    id INT AUTO_INCREMENT PRIMARY KEY,
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NULL, 
     customer_name VARCHAR(100) NOT NULL,
     phone VARCHAR(20) NOT NULL,
@@ -216,9 +216,9 @@ CREATE TABLE orders (
 
 -- ================= 5. ORDER DETAILS =================
 CREATE TABLE order_details (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    order_id INT NOT NULL,
-    product_id INT NULL,
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    order_id BIGINT NOT NULL,
+    product_id BIGINT NULL,
     quantity INT NOT NULL DEFAULT 1,
     cost_price DECIMAL(10, 2) NOT NULL,    
     selling_price DECIMAL(10, 2) NOT NULL, 
@@ -229,8 +229,8 @@ CREATE TABLE order_details (
 
 -- ================= 6. PAYMENTS =================
 CREATE TABLE payments (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    order_id INT NOT NULL,
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    order_id BIGINT NOT NULL,
     method VARCHAR(50) NOT NULL, 
     status VARCHAR(50) DEFAULT 'pending',
     transaction_code VARCHAR(100) UNIQUE,
@@ -241,7 +241,7 @@ CREATE TABLE payments (
 
 -- ================= 7. 1-1 CHATS (Cải tiến) =================
 CREATE TABLE chats (
-    id INT AUTO_INCREMENT PRIMARY KEY,
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
     
     -- Định danh phòng chat (Cuộc hội thoại)
     user_id INT NULL,             -- NULL nếu là khách vãng lai
