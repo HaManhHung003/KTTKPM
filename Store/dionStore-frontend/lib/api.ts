@@ -16,7 +16,7 @@ const secureCookieOptions = {
   secure: process.env.NODE_ENV === 'production',
 };
 
-// Request interceptor: attach token
+
 api.interceptors.request.use((config) => {
   const token = Cookies.get('accessToken');
   if (token) {
@@ -25,7 +25,7 @@ api.interceptors.request.use((config) => {
   return config;
 }, (error) => Promise.reject(error));
 
-// Response interceptor: handle 401 and refresh token
+
 api.interceptors.response.use(
   (response) => response,
   async (error) => {
@@ -34,13 +34,13 @@ api.interceptors.response.use(
     
     const statusCode = error.response?.status;
 
-    // Treat 401/403 from protected endpoints as a signal to refresh once.
+    
     if ((statusCode === 401 || statusCode === 403) && originalRequest && !originalRequest._retry && !requestUrl.includes('/auth/login') && !requestUrl.includes('/auth/register') && !requestUrl.includes('/auth/refresh')) {
       originalRequest._retry = true;
       try {
         const refreshToken = Cookies.get('refreshToken');
 
-        // Attempt refresh via credentials and keep legacy token body for compatibility.
+        
         const refreshPayload = refreshToken ? { refreshToken } : {};
         const res = await axios.post(`${API_BASE_URL}/auth/refresh`, refreshPayload, {
           withCredentials: true,
@@ -49,16 +49,16 @@ api.interceptors.response.use(
           throw new Error('Refresh response missing access token');
         }
         
-        // Save new token
-        Cookies.set('accessToken', res.data.accessToken, { expires: 1 / 96, ...secureCookieOptions }); // 15 mins
         
-        // Retry original request with new token
+        Cookies.set('accessToken', res.data.accessToken, { expires: 1 / 96, ...secureCookieOptions }); 
+        
+        
         if (originalRequest.headers) {
           originalRequest.headers.Authorization = `Bearer ${res.data.accessToken}`;
         }
         return api(originalRequest);
       } catch (refreshError) {
-        // Refresh failed, logout user
+        
         Cookies.remove('accessToken');
         Cookies.remove('refreshToken');
         if (typeof window !== 'undefined' && window.location.pathname !== '/login' && window.location.pathname !== '/register') {

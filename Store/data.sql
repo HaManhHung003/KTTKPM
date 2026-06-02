@@ -86,19 +86,17 @@ CREATE TABLE payments (
 );
 
 
--- ================= 7. 1-1 CHATS (Cải tiến) =================
+-- ================= 7. 1-1 CHATS  =================
 CREATE TABLE chats (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     
-    -- Định danh phòng chat (Cuộc hội thoại)
-    user_id INT NULL,             -- NULL nếu là khách vãng lai
-    guest_token VARCHAR(255) NULL, -- Lưu Session ID / Token của khách chưa login
+    user_id INT NULL,             
+    guest_token VARCHAR(255) NULL, 
     
-    -- Nội dung tin nhắn
+
     message TEXT NOT NULL,
-    sender_role ENUM('admin', 'customer') NOT NULL, -- Ai là người gửi tin này?
-    is_read BOOLEAN DEFAULT FALSE,                  -- Admin hoặc khách đã đọc chưa (để làm thông báo chuông)
-    
+    sender_role ENUM('admin', 'customer') NOT NULL, 
+    is_read BOOLEAN DEFAULT FALSE,                  
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
 );

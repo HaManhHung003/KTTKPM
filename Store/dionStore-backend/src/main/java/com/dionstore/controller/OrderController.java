@@ -68,13 +68,13 @@ public class OrderController {
             return ResponseEntity.notFound().build();
         }
 
-        // Check if the order belongs to the user or user is admin
+        
         User user = authService.getUserByEmail(authentication.getName());
         if (user == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
 
-        // Robust check: Compare User ID, Order Email vs User Email, or User's stored Email
+        
         boolean isOwner = (order.getUser() != null && order.getUser().getId().equals(user.getId()))
                 || (order.getEmail() != null && order.getEmail().equalsIgnoreCase(user.getEmail()))
                 || (order.getUser() != null && order.getUser().getEmail().equalsIgnoreCase(user.getEmail()));

@@ -7,7 +7,9 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "products")
-public class Product {
+public class Product implements java.io.Serializable {
+    private static final long serialVersionUID = 1L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -32,8 +34,8 @@ public class Product {
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
 
-    // New field for product visibility
-    private boolean isPublished = false; // Default to false
+    
+    private boolean isPublished = false; 
 
     public Product() {}
 
@@ -69,7 +71,7 @@ public class Product {
     public LocalDateTime getCreatedAt() { return createdAt; }
     public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
 
-    // Getter and Setter for isPublished
+    
     public boolean isPublished() {
         return isPublished;
     }

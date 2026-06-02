@@ -42,7 +42,7 @@ export default function Header() {
   )
 
   const isAdmin =
-    user?.role === 'Admin' ||
+    user?.role?.toLowerCase() === 'admin' ||
     user?.authorities?.some((authority) => authority.authority === 'ROLE_ADMIN')
 
   const handleLogout = () => {

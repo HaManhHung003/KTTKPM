@@ -61,7 +61,7 @@ export default function ProductDetailPage() {
       id: product.id.toString(),
       name: product.name,
       price: product.sellingPrice,
-      originalPrice: product.originalPrice,
+      originalPrice: product.originalPrice ?? product.sellingPrice,
       image: product.image,
     }, quantity)
 
@@ -104,7 +104,7 @@ export default function ProductDetailPage() {
       </button>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
-        {/* Product Image */}
+        {}
         <div className="relative aspect-square w-full overflow-hidden bg-muted/10 rounded-2xl border border-border p-8 flex items-center justify-center">
           <img
             src={product.image}
@@ -118,7 +118,7 @@ export default function ProductDetailPage() {
           )}
         </div>
 
-        {/* Product Info */}
+        {}
         <div className="flex flex-col justify-center">
           {product.category && (
             <Link href={`/category/${product.category.id}`} className="text-primary font-medium hover:underline mb-2 inline-block">
@@ -129,7 +129,7 @@ export default function ProductDetailPage() {
             {product.name}
           </h1>
 
-          {/* Rating */}
+          {}
           {(product.rating !== undefined && product.reviews !== undefined) ? (
             <div className="flex items-center gap-3 mb-6">
               <div className="flex items-center gap-1">
@@ -151,7 +151,7 @@ export default function ProductDetailPage() {
             <div className="mb-6"></div>
           )}
 
-          {/* Price */}
+          {}
           <div className="mb-8 flex items-end gap-4">
             <div className="text-4xl font-bold text-primary">
               {product.sellingPrice.toLocaleString('vi-VN')} ₫
@@ -163,7 +163,7 @@ export default function ProductDetailPage() {
             )}
           </div>
 
-          {/* Description */}
+          {}
           {product.description && (
             <div className="prose prose-sm sm:prose-base dark:prose-invert text-muted-foreground mb-8">
               <p>{product.description}</p>
@@ -172,9 +172,9 @@ export default function ProductDetailPage() {
 
           <hr className="border-border mb-8" />
 
-          {/* Actions */}
+          {}
           <div className="flex flex-col sm:flex-row items-center gap-4">
-            {/* Quantity Selector */}
+            {}
             <div className="flex items-center border border-border rounded-lg h-12">
               <button 
                 onClick={decreaseQuantity}
@@ -193,7 +193,7 @@ export default function ProductDetailPage() {
               </button>
             </div>
 
-            {/* Add to Cart Button */}
+            {}
             <Button
               onClick={handleAddToCart}
               size="lg"

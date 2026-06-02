@@ -154,13 +154,13 @@ export default function AdminPage() {
     }
   }, [activeTab])
 
-  // Category CRUD state
+  
   const [isCatDialogOpen, setIsCatDialogOpen] = useState(false)
   const [catDeleteTarget, setCatDeleteTarget] = useState<Category | null>(null)
   const [currentCategory, setCurrentCategory] = useState<Category | null>(null)
   const [catForm, setCatForm] = useState({ name: '' })
 
-  // Order state
+  
   const [isOrderDialogOpen, setIsOrderDialogOpen] = useState(false)
   const [currentOrder, setCurrentOrder] = useState<Order | null>(null)
 
@@ -169,7 +169,7 @@ export default function AdminPage() {
     fetchCategories()
     fetchOrders()
 
-    // Global Admin Chat Notification Listener
+    
     connectChat(
       'admin',
       (msg: ChatMessage) => {
@@ -189,7 +189,7 @@ export default function AdminPage() {
       () => console.log('Connected to admin global notifications')
     )
 
-    // Poll for new orders every 30 seconds
+    
     const orderInterval = setInterval(() => {
       fetchOrders()
     }, 30000)
@@ -200,7 +200,7 @@ export default function AdminPage() {
     }
   }, [])
 
-  // ───── API Calls ─────
+  
   const fetchProducts = async () => {
     try {
       setLoading(true)
@@ -301,7 +301,7 @@ export default function AdminPage() {
     }
   }
 
-  // ───── Category CRUD ─────
+  
   const handleSubmitCategory = async () => {
     if (!catForm.name.trim()) { toast.error('Tên danh mục không được để trống'); return }
     setSaving(true)
@@ -335,13 +335,13 @@ export default function AdminPage() {
   }
 
   const handleLogout = async () => {
-    try { await api.post('/auth/logout') } catch { /* ignore */ }
+    try { await api.post('/auth/logout') } catch {  }
     Cookies.remove('accessToken')
     Cookies.remove('refreshToken')
     router.push('/login')
   }
 
-  // ───── UI Helpers ─────
+  
   const openAddProduct = () => {
     setCurrentProduct(null)
     setFormState(emptyForm)
@@ -383,7 +383,7 @@ export default function AdminPage() {
   const inventoryValue = products.reduce((sum, p) => sum + (p.sellingPrice * p.quantity), 0)
   const publishedCount = products.filter(p => p.published).length
 
-  // Statistics Computations
+  
   const completedOrdersList = orders.filter(o => o.status === 'completed')
   const actualRevenue = completedOrdersList.reduce((sum, o) => sum + o.totalSellingAmount, 0)
   const actualCost = completedOrdersList.reduce((sum, o) => sum + (o.details?.reduce((s, d) => s + (d.costPrice * d.quantity), 0) || 0), 0)
@@ -391,7 +391,7 @@ export default function AdminPage() {
 
   const pendingOrdersCount = orders.filter(o => o.status === 'pending').length
 
-  // Order Status Pie Chart Data
+  
   const orderStatusCounts = orders.reduce((acc, order) => {
     acc[order.status] = (acc[order.status] || 0) + 1
     return acc
@@ -407,7 +407,7 @@ export default function AdminPage() {
 
   const PIE_COLORS = ['#f59e0b', '#3b82f6', '#8b5cf6', '#10b981', '#ef4444']
 
-  // Revenue Bar Chart Data
+  
   const getRevenueData = () => {
     const today = new Date()
     const completedOrders = orders.filter(o => o.status === 'completed')
@@ -437,7 +437,7 @@ export default function AdminPage() {
       })
     }
     
-    // year
+    
     const startY = startOfYear(today)
     const endY = endOfYear(today)
     const months = eachMonthOfInterval({ start: startY, end: endY })
@@ -454,12 +454,12 @@ export default function AdminPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Sidebar + Main Layout */}
+      {}
       <div className="flex h-screen overflow-hidden">
 
-        {/* ── Sidebar ── */}
+        {}
         <aside className="w-64 bg-white border-r border-gray-200 flex flex-col flex-shrink-0">
-          {/* Logo */}
+          {}
           <div className="p-6 border-b border-gray-200">
             <div className="flex items-center gap-3">
               <div className="w-9 h-9 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/25">
@@ -472,7 +472,7 @@ export default function AdminPage() {
             </div>
           </div>
 
-          {/* Nav */}
+          {}
           <nav className="flex-1 p-4 space-y-1">
             <button
               onClick={() => setActiveTab('statistics')}
@@ -545,7 +545,7 @@ export default function AdminPage() {
             </button>
           </nav>
 
-          {/* Logout */}
+          {}
           <div className="p-4 border-t border-gray-200">
             <button
               onClick={handleLogout}
@@ -557,9 +557,9 @@ export default function AdminPage() {
           </div>
         </aside>
 
-        {/* ── Main Content ── */}
+        {}
         <main className="flex-1 overflow-auto">
-          {/* Header */}
+          {}
           <div className="sticky top-0 z-10 bg-gray-50/80 backdrop-blur-md border-b border-gray-200 px-8 py-4 flex items-center justify-between">
             <div>
               <h1 className="text-gray-900 font-semibold text-lg">
@@ -580,10 +580,10 @@ export default function AdminPage() {
           </div>
 
           <div className="p-8">
-            {/* ─── STATISTICS TAB ─── */}
+            {}
             {activeTab === 'statistics' && (
               <div className="space-y-6">
-                {/* 4 Summary Cards */}
+                {}
                 <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-4">
                   <div className="bg-white border border-gray-200 rounded-[16px] p-4 shadow-sm">
                     <div className="flex items-center gap-3 mb-3">
@@ -661,9 +661,9 @@ export default function AdminPage() {
                   </div>
                 </div>
 
-                {/* Charts */}
+                {}
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                  {/* Status Pie Chart */}
+                  {}
                   <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm">
                     <h3 className="text-gray-900 font-semibold mb-6">Trạng thái đơn hàng</h3>
                     <div className="h-[300px] w-full">
@@ -702,7 +702,7 @@ export default function AdminPage() {
                     </div>
                   </div>
 
-                  {/* Revenue Bar Chart */}
+                  {}
                   <div className="bg-white border border-gray-200 rounded-2xl p-6 shadow-sm flex flex-col">
                     <div className="flex items-center justify-between mb-6">
                       <h3 className="text-gray-900 font-semibold">Doanh thu</h3>
@@ -748,7 +748,7 @@ export default function AdminPage() {
               </div>
             )}
 
-            {/* Stats Cards (chỉ hiện khi tab products) */}
+            {}
             {activeTab === 'products' && (
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
                 <div className="bg-white border border-gray-200 rounded-2xl p-5">
@@ -789,15 +789,15 @@ export default function AdminPage() {
               </div>
             )}
 
-            {/* ─── CHAT TAB ─── */}
+            {}
             {activeTab === 'chat' && (
               <AdminChatPanel />
             )}
 
-            {/* ─── PRODUCTS TAB ─── */}
+            {}
             {activeTab === 'products' && (
               <div className="bg-white border border-gray-200 rounded-2xl overflow-hidden">
-                {/* Table Header */}
+                {}
                 <div className="flex items-center justify-between p-5 border-b border-gray-200">
                   <div className="flex items-center gap-3">
                     <BarChart3 className="w-5 h-5 text-blue-400" />
@@ -807,7 +807,7 @@ export default function AdminPage() {
                     </Badge>
                   </div>
                   <div className="flex items-center gap-3">
-                    {/* Search */}
+                    {}
                     <div className="relative">
                       <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
                       <input
@@ -936,7 +936,7 @@ export default function AdminPage() {
               </div>
             )}
 
-            {/* ─── CATEGORIES TAB ─── */}
+            {}
             {activeTab === 'categories' && (
               <div className="bg-white border border-gray-200 rounded-2xl overflow-hidden">
                 <div className="flex items-center justify-between p-5 border-b border-gray-200">
@@ -999,7 +999,7 @@ export default function AdminPage() {
               </div>
             )}
 
-            {/* ─── ORDERS TAB ─── */}
+            {}
             {activeTab === 'orders' && (
               <div className="bg-white border border-gray-200 rounded-2xl overflow-hidden">
                 <div className="flex items-center justify-between p-5 border-b border-gray-200">
@@ -1079,7 +1079,7 @@ export default function AdminPage() {
         </main>
       </div>
 
-      {/* ─── PRODUCT Dialog ─── */}
+      {}
       <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
         <DialogContent className="bg-white border border-gray-200 text-gray-900 sm:max-w-[560px]">
           <DialogHeader>
@@ -1187,7 +1187,7 @@ export default function AdminPage() {
               />
             </div>
 
-            {/* Publish toggle */}
+            {}
             <div className="flex items-center justify-between bg-gray-50 border border-gray-200 rounded-xl px-4 py-3">
               <div>
                 <div className="text-gray-900 text-sm font-medium">Hiển thị sản phẩm</div>
@@ -1230,7 +1230,7 @@ export default function AdminPage() {
         </DialogContent>
       </Dialog>
 
-      {/* ─── CATEGORY Dialog ─── */}
+      {}
       <Dialog open={isCatDialogOpen} onOpenChange={setIsCatDialogOpen}>
         <DialogContent className="bg-white border border-gray-200 text-gray-900 sm:max-w-[400px]">
           <DialogHeader>
@@ -1270,7 +1270,7 @@ export default function AdminPage() {
         </DialogContent>
       </Dialog>
 
-      {/* ─── DELETE Product Confirm ─── */}
+      {}
       <AlertDialog open={!!deleteTarget} onOpenChange={open => !open && setDeleteTarget(null)}>
         <AlertDialogContent className="bg-white border border-gray-200">
           <AlertDialogHeader>
@@ -1295,7 +1295,7 @@ export default function AdminPage() {
         </AlertDialogContent>
       </AlertDialog>
 
-      {/* ─── DELETE Category Confirm ─── */}
+      {}
       <AlertDialog open={!!catDeleteTarget} onOpenChange={open => !open && setCatDeleteTarget(null)}>
         <AlertDialogContent className="bg-white border border-gray-200">
           <AlertDialogHeader>
@@ -1319,7 +1319,7 @@ export default function AdminPage() {
         </AlertDialogContent>
       </AlertDialog>
 
-      {/* ─── ORDER Dialog ─── */}
+      {}
       <Dialog open={isOrderDialogOpen} onOpenChange={setIsOrderDialogOpen}>
         <DialogContent className="bg-white border border-gray-200 text-gray-900 sm:max-w-[700px] max-h-[85vh] overflow-y-auto">
           <DialogHeader>
@@ -1345,7 +1345,7 @@ export default function AdminPage() {
 
           {currentOrder && (
             <div className="space-y-6 py-4">
-              {/* Customer Info */}
+              {}
               <div className="bg-gray-50 border border-gray-200 rounded-xl p-4">
                 <h3 className="text-sm font-semibold text-gray-900 mb-3 flex items-center gap-2">
                   <User className="w-4 h-4 text-blue-400" /> Thông tin người đặt
@@ -1370,7 +1370,7 @@ export default function AdminPage() {
                 </div>
               </div>
 
-              {/* Order Items */}
+              {}
               <div className="bg-gray-50 border border-gray-200 rounded-xl p-4">
                 <h3 className="text-sm font-semibold text-gray-900 mb-3 flex items-center gap-2">
                   <Package className="w-4 h-4 text-orange-400" /> Sản phẩm đã mua
@@ -1399,7 +1399,7 @@ export default function AdminPage() {
                 </div>
               </div>
 
-              {/* Status Update */}
+              {}
               <div className="bg-gray-50 border border-gray-200 rounded-xl p-4">
                 <h3 className="text-sm font-semibold text-gray-900 mb-3 flex items-center gap-2">
                   <RefreshCw className="w-4 h-4 text-green-400" /> Cập nhật trạng thái

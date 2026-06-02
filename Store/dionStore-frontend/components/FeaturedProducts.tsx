@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react' // Import useEffect
+import { useState, useEffect } from 'react' 
 import { Card } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { ShoppingCart, Star, Check } from 'lucide-react'
@@ -9,32 +9,32 @@ import Link from 'next/link'
 import { useCart } from '@/contexts/CartContext'
 import api from '@/lib/api'
 
-// Define a type for the product fetched from the API
+
 interface Product {
   id: number;
   name: string;
   costPrice: number;
   sellingPrice: number;
-  originalPrice?: number; // Optional, as it might not always be present or needed
-  discount?: number; // Optional
-  rating?: number; // Optional
-  reviews?: number; // Optional
-  category?: { name: string }; // Assuming category is an object with a name
+  originalPrice?: number; 
+  discount?: number; 
+  rating?: number; 
+  reviews?: number; 
+  category?: { name: string }; 
   image: string;
-  isPublished: boolean; // Add isPublished property
+  isPublished: boolean; 
 }
 
 export default function FeaturedProducts() {
   const { addItem } = useCart()
   const [addedItems, setAddedItems] = useState<string[]>([])
-  const [products, setProducts] = useState<Product[]>([]) // State to store fetched products
-  const [loading, setLoading] = useState<boolean>(true); // Loading state
-  const [error, setError] = useState<string | null>(null); // Error state
+  const [products, setProducts] = useState<Product[]>([]) 
+  const [loading, setLoading] = useState<boolean>(true); 
+  const [error, setError] = useState<string | null>(null); 
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await api.get('/products'); // Call your backend API
+        const response = await api.get('/products'); 
         const data: Product[] = response.data;
         setProducts(data);
       } catch (e: any) {
@@ -45,14 +45,14 @@ export default function FeaturedProducts() {
     };
 
     fetchProducts();
-  }, []); // Empty dependency array means this runs once on mount
+  }, []); 
 
-  const handleAddToCart = (product: Product) => { // Use the Product interface
+  const handleAddToCart = (product: Product) => { 
     addItem({
       id: product.id.toString(),
       name: product.name,
       price: product.sellingPrice,
-      originalPrice: product.originalPrice,
+      originalPrice: product.originalPrice ?? product.sellingPrice,
       image: product.image,
     })
 
@@ -96,7 +96,7 @@ export default function FeaturedProducts() {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {products.map((product) => (
             <div key={product.id} className="group relative overflow-hidden rounded-xl border border-border bg-card transition-all hover:shadow-xl hover:-translate-y-1">
-              {/* Image Container with padding to make image smaller */}
+              {}
               <Link href={`/product/${product.id}`} className="block">
                 <div className="relative aspect-square w-full overflow-hidden bg-muted/30 p-8">
                   <img
@@ -104,7 +104,7 @@ export default function FeaturedProducts() {
                     alt={product.name}
                     className="h-full w-full object-contain transition-transform duration-500 group-hover:scale-110"
                   />
-                  {product.discount && product.discount > 0 && ( // Check if discount exists
+                  {product.discount && product.discount > 0 && ( 
                     <div className="absolute left-3 top-3 rounded-full bg-red-500 px-2 py-1 text-xs font-bold text-white shadow-lg z-10">
                       -{product.discount}%
                     </div>
@@ -112,16 +112,16 @@ export default function FeaturedProducts() {
                 </div>
               </Link>
 
-              {/* Product Info */}
+              {}
               <div className="p-4">
-                <p className="text-xs text-muted-foreground mb-2">{product.category?.name || 'Unknown Category'}</p> {/* Access category name */}
+                <p className="text-xs text-muted-foreground mb-2">{product.category?.name || 'Unknown Category'}</p> {}
                 <Link href={`/product/${product.id}`} className="hover:underline">
                   <h3 className="font-semibold text-foreground line-clamp-2 mb-2 text-sm">
                     {product.name}
                   </h3>
                 </Link>
 
-                {/* Rating - only display if rating exists */}
+                {}
                 {product.rating !== undefined && product.reviews !== undefined && (
                   <div className="flex items-center gap-2 mb-3">
                     <div className="flex items-center gap-1">
@@ -141,19 +141,19 @@ export default function FeaturedProducts() {
                   </div>
                 )}
 
-                {/* Price */}
+                {}
                 <div className="mb-4">
                   <div className="text-lg font-bold text-primary">
                     {product.sellingPrice.toLocaleString('vi-VN')} ₫
                   </div>
-                  {product.originalPrice && product.originalPrice > product.sellingPrice && ( // Check if originalPrice exists
+                  {product.originalPrice && product.originalPrice > product.sellingPrice && ( 
                     <div className="text-xs text-muted-foreground line-through">
                       {product.originalPrice.toLocaleString('vi-VN')} ₫
                     </div>
                   )}
                 </div>
 
-                {/* Add to Cart Button */}
+                {}
                 <Button
                   onClick={() => handleAddToCart(product)}
                   className={`w-full gap-2 transition-all ${addedItems.includes(product.id.toString())

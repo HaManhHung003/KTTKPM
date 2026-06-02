@@ -29,21 +29,21 @@ public class ChatController {
         this.messagingTemplate = messagingTemplate;
     }
 
-    // REST: Get history
+    
     @GetMapping("/api/chat/history/{userId}")
     public ResponseEntity<List<ChatMessageDTO>> getHistory(@PathVariable Integer userId, Principal principal) {
         if (principal == null) return ResponseEntity.status(401).build();
         return ResponseEntity.ok(chatService.getChatHistory(userId));
     }
 
-    // REST: Admin get active chats
+    
     @GetMapping("/api/chat/active")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<Map<String, Object>>> getActiveChats() {
         return ResponseEntity.ok(chatService.getActiveChats());
     }
 
-    // STOMP endpoint: /app/chat.send
+    
     @MessageMapping("/chat.send")
     public void sendMessage(@Payload SendMessageRequest request, Principal principal) {
         System.out.println("Received message: " + request.getMessage() + " from user: " + request.getUserId());
@@ -58,10 +58,10 @@ public class ChatController {
             return;
         }
 
-        String senderRole = sender.getRoleString().toLowerCase(); // "admin" or "customer"
+        String senderRole = sender.getRoleString().toLowerCase(); 
         
-        Integer targetUserId = request.getUserId(); // the conversation's owner ID
-        // If customer is sending, force the targetUserId to be their own ID
+        Integer targetUserId = request.getUserId(); 
+        
         if ("customer".equals(senderRole)) {
             targetUserId = sender.getId();
         }
@@ -70,11 +70,11 @@ public class ChatController {
 
         ChatMessageDTO savedMessage = chatService.saveMessage(targetUserId, request.getMessage(), senderRole);
 
-        // Broadcast to the user's specific topic
-        // e.g. /topic/chat.1
+        
+        
         messagingTemplate.convertAndSend("/topic/chat." + targetUserId, savedMessage);
 
-        // Notify admin globally
+        
         if ("customer".equals(senderRole)) {
             messagingTemplate.convertAndSend("/topic/chat.admin", savedMessage);
         }

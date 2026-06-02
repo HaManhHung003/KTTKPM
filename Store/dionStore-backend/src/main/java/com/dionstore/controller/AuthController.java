@@ -7,6 +7,7 @@ import com.dionstore.dto.RegistrationDto;
 import com.dionstore.dto.TokenRefreshRequestDto;
 import com.dionstore.entity.User;
 import com.dionstore.exception.AuthException;
+import com.dionstore.security.RateLimit;
 import com.dionstore.service.AuthService;
 import com.dionstore.service.JwtService;
 import org.springframework.http.HttpStatus;
@@ -29,6 +30,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
+    @RateLimit(limit = 5, timeWindow = 60)
     public ResponseEntity<?> login(@RequestBody LoginDto loginDto) {
         try {
             User user = authService.login(loginDto);
@@ -92,7 +94,7 @@ public class AuthController {
         try {
             User user = authService.register(registrationDto);
 
-            // Generate tokens for Story 1.2
+            
             String accessToken = jwtService.generateAccessToken(user);
             String refreshToken = jwtService.generateRefreshToken(user);
 

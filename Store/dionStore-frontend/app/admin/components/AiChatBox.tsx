@@ -57,7 +57,7 @@ export default function AiChatBox() {
 
   return (
     <>
-      {/* Nút nổi bật mở Chat */}
+      {}
       {!isOpen && (
         <button
           onClick={() => setIsOpen(true)}
@@ -68,10 +68,10 @@ export default function AiChatBox() {
         </button>
       )}
 
-      {/* Cửa sổ Chat */}
+      {}
       {isOpen && (
         <div className="fixed bottom-6 right-6 w-[400px] h-[550px] bg-white rounded-2xl shadow-2xl flex flex-col overflow-hidden z-50 border border-gray-100 flex flex-col animate-in slide-in-from-bottom-5 fade-in duration-300">
-          {/* Header */}
+          {}
           <div className="bg-gradient-to-r from-blue-600 to-indigo-600 p-4 flex justify-between items-center text-white shrink-0">
             <div className="flex items-center gap-2">
               <div className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
@@ -90,7 +90,7 @@ export default function AiChatBox() {
             </button>
           </div>
 
-          {/* Danh sách tin nhắn */}
+          {}
           <div className="flex-1 overflow-y-auto p-4 bg-gray-50 flex flex-col gap-4">
             {messages.map((msg) => (
               <div 
@@ -125,7 +125,7 @@ export default function AiChatBox() {
             <div ref={messagesEndRef} />
           </div>
 
-          {/* Ô nhập liệu */}
+          {}
           <form onSubmit={handleSend} className="p-3 bg-white border-t border-gray-100 flex gap-2 shrink-0">
             <input
               type="text"

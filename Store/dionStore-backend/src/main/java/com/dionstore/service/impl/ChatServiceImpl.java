@@ -31,7 +31,7 @@ public class ChatServiceImpl implements ChatService {
     public List<ChatMessageDTO> getChatHistory(Integer userId) {
         List<ChatMessage> messages = chatRepository.findByUserIdOrderByCreatedAtAsc(userId);
         
-        // Mark unread customer messages as read when history is fetched (assuming admin fetches it)
+        
         boolean updated = false;
         for (ChatMessage msg : messages) {
             if ("customer".equals(msg.getSenderRole()) && !Boolean.TRUE.equals(msg.getIsRead())) {

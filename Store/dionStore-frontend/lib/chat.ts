@@ -21,7 +21,7 @@ export const connectChat = (
     ? `/topic/chat.${topicIdentifier}` 
     : `/topic/${topicIdentifier}`;
 
-  // If already fully connected, subscribe immediately
+  
   if (stompClient?.connected) {
     if (currentSubscriptions.has(topicString)) {
       currentSubscriptions.get(topicString)?.unsubscribe();
@@ -36,15 +36,15 @@ export const connectChat = (
     return stompClient;
   }
 
-  // Not active yet, add to pending list
+  
   pendingSubscriptions.set(topicString, onMessageReceived);
 
-  // If already connecting, just wait for the onConnect event
+  
   if (isConnecting || stompClient) {
     return stompClient;
   }
 
-  // First time connecting
+  
   isConnecting = true;
   const token = Cookies.get('accessToken');
 
@@ -62,7 +62,7 @@ export const connectChat = (
     console.log('Connected STOMP');
     isConnecting = false;
     
-    // Subscribe to all pending topics now that we are connected
+    
     pendingSubscriptions.forEach((callback, topic) => {
       if (currentSubscriptions.has(topic)) {
         currentSubscriptions.get(topic)?.unsubscribe();

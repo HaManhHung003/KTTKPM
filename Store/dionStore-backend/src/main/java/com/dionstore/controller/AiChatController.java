@@ -2,6 +2,7 @@ package com.dionstore.controller;
 
 import com.dionstore.dto.request.AiChatRequest;
 import com.dionstore.dto.response.AiChatResponse;
+import com.dionstore.security.RateLimit;
 import com.dionstore.service.AiChatService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +19,7 @@ public class AiChatController {
 
     @PostMapping("/chat")
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @RateLimit(limit = 3, timeWindow = 60)
     public ResponseEntity<AiChatResponse> chat(@Valid @RequestBody AiChatRequest request) {
         AiChatResponse response = aiChatService.processAdminChat(request);
         return ResponseEntity.ok(response);

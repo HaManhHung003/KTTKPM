@@ -108,7 +108,7 @@ class AuthServiceTest {
 
     @Test
     void login_Success() {
-        // First register
+        
         authService.register(new RegistrationDto("Login User", "login@example.com", "Password123", "0901234567"));
 
         LoginDto loginDto = new LoginDto("login@example.com", "Password123");
@@ -143,7 +143,7 @@ class AuthServiceTest {
 
     @Test
     void refreshToken_Success() {
-        // Register and get token
+        
         User user = authService
                 .register(new RegistrationDto("Refresh User", "refresh@test.com", "Password123", "0901234567"));
 
@@ -181,6 +181,6 @@ class AuthServiceTest {
     @Test
     void logout_Success() {
         authService.logout("test@example.com");
-        // No exception means success currently
+        
     }
 }

@@ -13,7 +13,7 @@ public class AuthResponseDto {
         this.user = new UserInfo(user);
     }
 
-    // Getters and Setters
+    
     public String getAccessToken() { return accessToken; }
     public void setAccessToken(String accessToken) { this.accessToken = accessToken; }
 
@@ -23,7 +23,7 @@ public class AuthResponseDto {
     public UserInfo getUser() { return user; }
     public void setUser(UserInfo user) { this.user = user; }
 
-    // Safe user info DTO (không lộ passwordHash)
+    
     public static class UserInfo {
         private Integer id;
         private String name;
@@ -38,7 +38,7 @@ public class AuthResponseDto {
             this.email = user.getEmail();
             this.phone = user.getPhone();
             this.address = user.getAddress();
-            // role là enum ADMIN / CUSTOMER → trả về lowercase cho frontend
+            
             this.role = user.getRole() != null ? user.getRole().name().toLowerCase() : "customer";
         }
 

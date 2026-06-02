@@ -8,7 +8,7 @@ export default function Footer() {
     <footer className="bg-primary text-white mt-16">
       <div className="max-w-7xl mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
-          {/* About */}
+          {}
           <div>
             <h3 className="text-lg font-bold mb-4">dionStore</h3>
             <p className="text-sm opacity-90">
@@ -16,7 +16,7 @@ export default function Footer() {
             </p>
           </div>
 
-          {/* Customer Service */}
+          {}
           <div>
             <h4 className="font-semibold mb-4">Dịch vụ khách hàng</h4>
             <ul className="space-y-2 text-sm">
@@ -43,7 +43,7 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* About Us */}
+          {}
           <div>
             <h4 className="font-semibold mb-4">Về chúng tôi</h4>
             <ul className="space-y-2 text-sm">
@@ -70,7 +70,7 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Contact */}
+          {}
           <div>
             <h4 className="font-semibold mb-4">Liên hệ</h4>
             <div className="space-y-3 text-sm">
@@ -90,7 +90,7 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Divider */}
+        {}
         <div className="border-t border-white/20 pt-8">
           <div className="text-center text-sm opacity-90">
             <p>&copy; 2024 dionStore. All rights reserved.</p>

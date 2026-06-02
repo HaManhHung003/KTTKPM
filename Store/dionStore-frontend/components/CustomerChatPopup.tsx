@@ -19,25 +19,25 @@ export default function CustomerChatPopup() {
   const [isConnected, setIsConnected] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
 
-  // Fetch me on mount
+  
   useEffect(() => {
     api.get<User>('/auth/me').then(res => {
       const user = res.data;
       setMe(user);
     }).catch(() => {
-      // Not logged in
+      
     });
   }, []);
 
-  // Connect STOMP when opened and user is customer
+  
   useEffect(() => {
-    if (isOpen && me && me.role !== 'admin') {
-      // Load history
+    if (isOpen && me && me.role?.toLowerCase() !== 'admin') {
+      
       api.get<ChatMessage[]>(`/chat/history/${me.id}`).then(hist => {
         setMessages(hist.data);
       }).catch(console.error);
 
-      // Connect STOMP
+      
       connectChat(
         Number(me.id),
         (msg) => setMessages(prev => [...prev, msg]),
@@ -53,7 +53,7 @@ export default function CustomerChatPopup() {
     }
   }, [isOpen, me]);
 
-  // Scroll to bottom
+  
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, isOpen]);
@@ -67,11 +67,11 @@ export default function CustomerChatPopup() {
     }
   };
 
-  if (me?.role === 'admin') return null; // Admin doesn't see popup
+  if (me?.role?.toLowerCase() === 'admin') return null; 
 
   return (
     <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end">
-      {/* Animated Popup Chat Window */}
+      {}
       <div 
         className={cn(
           "transition-all duration-300 ease-out origin-bottom-right mb-4",
@@ -79,7 +79,7 @@ export default function CustomerChatPopup() {
         )}
       >
         <Card className="w-[360px] h-[520px] flex flex-col shadow-2xl border-0 overflow-hidden ring-1 ring-black/5 bg-background/95 backdrop-blur-xl">
-          {/* Header */}
+          {}
           <div className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white p-4 pb-6 flex justify-between items-start relative overflow-hidden">
             <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-2xl -translate-y-1/2 translate-x-1/3"></div>
             <div className="flex items-center gap-3 relative z-10">
@@ -102,7 +102,7 @@ export default function CustomerChatPopup() {
             </button>
           </div>
 
-          {/* Messages */}
+          {}
           <div className="flex-1 p-4 overflow-y-auto space-y-4 -mt-2 bg-gray-50/50 rounded-t-2xl relative z-20">
             {!me && (
               <div className="flex flex-col items-center justify-center h-full text-center space-y-3 opacity-60">
@@ -152,7 +152,7 @@ export default function CustomerChatPopup() {
             <div ref={bottomRef} />
           </div>
 
-          {/* Input */}
+          {}
           {me && (
             <div className="p-3 bg-white border-t border-gray-100 z-20">
               <form onSubmit={handleSend} className="flex gap-2 items-center bg-gray-50 rounded-full p-1 pr-2 border border-gray-200 focus-within:border-blue-400 focus-within:ring-2 focus-within:ring-blue-100 transition-all">
@@ -177,7 +177,7 @@ export default function CustomerChatPopup() {
         </Card>
       </div>
 
-      {/* Floating Action Button */}
+      {}
       <button 
         onClick={() => setIsOpen(!isOpen)}
         onMouseEnter={() => setIsHovered(true)}
@@ -193,12 +193,12 @@ export default function CustomerChatPopup() {
           <MessageCircle className="w-6 h-6 text-white" />
         )}
         
-        {/* Notification Badge */}
+        {}
         {!isOpen && (
           <span className="absolute 0 top-0 right-0 w-3.5 h-3.5 bg-red-500 rounded-full border-2 border-background animate-bounce"></span>
         )}
         
-        {/* Tooltip */}
+        {}
         {!isOpen && (
           <div className={cn(
             "absolute right-16 px-3 py-1.5 bg-black text-white text-xs rounded-lg shadow-lg whitespace-nowrap transition-all duration-300 pointer-events-none",

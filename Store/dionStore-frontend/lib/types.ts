@@ -1,7 +1,7 @@
 export interface User {
   id: string;
   email: string;
-  role?: 'Admin' | 'Customer';
+  role?: 'Admin' | 'Customer' | 'admin' | 'customer';
   authorities?: Array<{ authority: string }>;
   createdAt?: string;
 }
@@ -15,7 +15,7 @@ export interface ChatMessage {
   id: number;
   userId: number;
   message: string;
-  senderRole: string; // 'admin' or 'customer'
+  senderRole: string; 
   isRead: boolean;
   createdAt: string;
 }

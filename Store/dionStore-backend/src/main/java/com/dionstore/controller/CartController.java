@@ -37,7 +37,7 @@ public class CartController {
             Product product = productOpt.get();
             boolean found = false;
             
-            // Check if product already exists in cart
+            
             for (CartItemResponse item : cart) {
                 if (item.getProductId().equals(product.getId())) {
                     item.setQuantity(item.getQuantity() + request.getQuantity());
@@ -47,7 +47,7 @@ public class CartController {
                 }
             }
             
-            // If new item
+            
             if (!found) {
                 CartItemResponse newItem = new CartItemResponse(
                         product.getId(),
@@ -100,7 +100,7 @@ public class CartController {
         return ResponseEntity.ok(getCartResponse(session));
     }
 
-    // Helper methods
+    
     @SuppressWarnings("unchecked")
     private List<CartItemResponse> getCartFromSession(HttpSession session) {
         List<CartItemResponse> cart = (List<CartItemResponse>) session.getAttribute(CART_SESSION_KEY);

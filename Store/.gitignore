@@ -1,0 +1,17 @@
+# Java build
+dionStore-backend/target/
+*.class
+
+# Node build
+dionStore-frontend/node_modules/
+dionStore-frontend/.next/
+dionStore-frontend/out/
+dionStore-frontend/build/
+.next/
+node_modules/
+
+# IDE files
+.idea/
+.vscode/
+*.iml
+.DS_Store

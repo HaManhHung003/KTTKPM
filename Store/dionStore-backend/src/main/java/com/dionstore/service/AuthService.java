@@ -20,7 +20,7 @@ public class AuthService {
     private final PasswordService passwordService;
     private final JwtService jwtService;
 
-    // Pattern: Min 8 chars, 1 Uppercase, 1 Number
+    
     private static final Pattern PASSWORD_PATTERN = Pattern.compile("^(?=.*[0-9])(?=.*[A-Z]).{8,}$");
     private static final Pattern EMAIL_PATTERN = Pattern.compile("^[A-Za-z0-9+_.-]+@(.+)$");
     private static final Pattern PHONE_PATTERN = Pattern.compile("^(0|\\+84)[3|5|7|8|9][0-9]{8}$");
@@ -32,7 +32,7 @@ public class AuthService {
     }
 
     public User register(RegistrationDto dto) {
-        // null checks
+        
         if (dto == null || dto.getEmail() == null || dto.getPassword() == null || dto.getName() == null
                 || dto.getPhone() == null) {
             throw new AuthException("All fields (name, email, password, phone) are required");
@@ -47,28 +47,28 @@ public class AuthService {
             throw new AuthException("Name must not be empty");
         }
 
-        // Email format validation
+        
         if (!EMAIL_PATTERN.matcher(email).matches()) {
             throw new AuthException("Invalid email format");
         }
 
-        // Phone format validation (Vietnamese)
+        
         if (!PHONE_PATTERN.matcher(phone).matches()) {
             throw new AuthException("Invalid Vietnamese phone number format");
         }
 
-        // AC 1: Email uniqueness
+        
         if (userRepository.findByEmail(email).isPresent()) {
             throw new AuthException("Email already registered");
         }
 
-        // AC 2: Password complexity (Min 8 chars, 1 Uppercase, 1 Number)
+        
         if (!PASSWORD_PATTERN.matcher(password).matches()) {
             throw new AuthException(
                     "Password must be at least 8 characters, contain at least one uppercase letter and one number");
         }
 
-        // AC 3: Hashing
+        
         String passwordHash = passwordService.hashPassword(password);
 
         User user = new User();
@@ -76,11 +76,11 @@ public class AuthService {
         user.setEmail(email);
         user.setPasswordHash(passwordHash);
         user.setPhone(phone);
-        user.setRole(UserRole.CUSTOMER); // Default role
+        user.setRole(UserRole.CUSTOMER); 
 
         logger.info("Saving user: name={}, email={}, phone={}", name, email, phone);
 
-        // AC 4: Save to repository
+        
         return userRepository.save(user);
     }
 
@@ -103,8 +103,8 @@ public class AuthService {
             throw new AuthException("Mật khẩu không chính xác.");
         }
 
-        // Đã bỏ qua chức năng đếm số lần đăng nhập sai và khóa tài khoản
-        // để thuận tiện cho quá trình phát triển (development).
+        
+        
         if (user.isLocked() || user.getFailedLoginAttempts() > 0) {
             user.setLocked(false);
             user.setFailedLoginAttempts(0);
@@ -132,10 +132,10 @@ public class AuthService {
     }
 
     public void logout(String email) {
-        // In a stateless JWT system without a blacklist, logout is primarily
-        // client-side.
-        // This endpoint exists for logging, auditing, or future expansion (e.g. Redis
-        // blacklist).
+        
+        
+        
+        
         System.out.println("User logged out: " + email);
     }
 

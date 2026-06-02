@@ -44,11 +44,11 @@ export default function CategoryProductsPage() {
     const fetchData = async () => {
       try {
         setLoading(true)
-        // Fetch category details
+        
         const catRes = await api.get<Category>(`/categories/${id}`)
         setCategory(catRes.data)
 
-        // Fetch products for this category
+        
         const prodRes = await api.get<Product[]>(`/products/category/${id}`)
         setProducts(prodRes.data)
       } catch (err: any) {
@@ -69,7 +69,7 @@ export default function CategoryProductsPage() {
       id: product.id.toString(),
       name: product.name,
       price: product.sellingPrice,
-      originalPrice: product.originalPrice,
+      originalPrice: product.originalPrice ?? product.sellingPrice,
       image: product.image,
     })
 

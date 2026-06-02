@@ -13,7 +13,7 @@ public class AiChatResponse {
 
     private String response;
     
-    // Thêm các thông tin debug nếu cần (ví dụ câu SQL đã chạy, lỗi nếu có)
+    
     private String executedSql;
     private String error;
 }

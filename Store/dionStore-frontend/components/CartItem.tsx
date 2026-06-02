@@ -21,7 +21,7 @@ export default function CartItem({ item }: CartItemProps) {
 
   return (
     <div className="flex gap-4 border-b border-border pb-4 py-4">
-      {/* Product Image */}
+      {}
       <div className="h-24 w-24 flex-shrink-0 bg-muted rounded-lg overflow-hidden">
         <img
           src={item.image}
@@ -30,11 +30,11 @@ export default function CartItem({ item }: CartItemProps) {
         />
       </div>
 
-      {/* Product Details */}
+      {}
       <div className="flex-1 min-w-0">
         <h3 className="font-medium text-foreground line-clamp-2">{item.name}</h3>
 
-        {/* Pricing */}
+        {}
         <div className="flex items-center gap-2 mt-2">
           <span className="text-lg font-bold text-primary">
             {item.price.toLocaleString('vi-VN')}₫
@@ -51,7 +51,7 @@ export default function CartItem({ item }: CartItemProps) {
           )}
         </div>
 
-        {/* Quantity Controls */}
+        {}
         <div className="flex items-center gap-2 mt-3">
           <button
             onClick={() => handleQuantityChange(item.quantity - 1)}
@@ -71,7 +71,7 @@ export default function CartItem({ item }: CartItemProps) {
         </div>
       </div>
 
-      {/* Total & Delete */}
+      {}
       <div className="flex flex-col items-end justify-between">
         <button
           onClick={() => removeItem(item.id)}

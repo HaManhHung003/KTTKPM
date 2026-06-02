@@ -12,17 +12,17 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
-        // Enable a simple in-memory message broker to send messages to clients on /topic
+        
         config.enableSimpleBroker("/topic", "/queue");
-        // Prefix for messages bound for methods annotated with @MessageMapping
+        
         config.setApplicationDestinationPrefixes("/app");
-        // Prefix for user-specific queues
+        
         config.setUserDestinationPrefix("/user");
     }
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        // Register the "/ws" endpoint, enabling SockJS fallback options
+        
         registry.addEndpoint("/ws")
                 .setAllowedOrigins("http://localhost:3000", "http://localhost:5173")
                 .withSockJS();

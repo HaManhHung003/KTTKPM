@@ -32,7 +32,7 @@ public class Order {
     @Column(name = "total_selling_amount")
     private BigDecimal totalSellingAmount;
 
-    private String status; // pending, confirmed, shipping, completed, cancelled
+    private String status; 
 
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;

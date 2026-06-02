@@ -18,7 +18,7 @@ public class ChatMessage {
     private String message;
 
     @Column(name = "sender_role")
-    private String senderRole; // admin, customer
+    private String senderRole; 
 
     @Column(name = "guest_token")
     private String guestToken;

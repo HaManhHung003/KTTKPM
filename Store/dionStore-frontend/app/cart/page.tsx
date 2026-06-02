@@ -12,7 +12,7 @@ export default function CartPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Header */}
+      {}
       <header className="border-b border-border bg-card sticky top-0 z-40">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex items-center gap-4">
@@ -31,10 +31,10 @@ export default function CartPage() {
         </div>
       </header>
 
-      {/* Main Content */}
+      {}
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {items.length === 0 ? (
-          // Empty Cart
+          
           <div className="flex flex-col items-center justify-center min-h-96 text-center">
             <ShoppingCart size={64} className="text-muted-foreground mb-6" />
             <h2 className="text-2xl font-bold text-foreground mb-2">Giỏ hàng của bạn trống</h2>
@@ -50,9 +50,9 @@ export default function CartPage() {
             </Link>
           </div>
         ) : (
-          // Cart with Items
+          
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {/* Cart Items */}
+            {}
             <div className="lg:col-span-2">
               <div className="bg-card rounded-lg border border-border">
                 <div className="p-6 border-b border-border">
@@ -67,7 +67,7 @@ export default function CartPage() {
                 </div>
               </div>
 
-              {/* Continue Shopping */}
+              {}
               <div className="mt-6 flex justify-center">
                 <Link
                   href="/"
@@ -78,7 +78,7 @@ export default function CartPage() {
               </div>
             </div>
 
-            {/* Order Summary Sidebar */}
+            {}
             <div className="lg:col-span-1">
               <OrderSummary showCheckoutButton={true} />
             </div>

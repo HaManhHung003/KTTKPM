@@ -43,7 +43,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             String email = jwtService.extractEmail(token);
             String role = jwtService.extractRole(token);
             
-            // Map role to ROLE_ prefix for Spring Security
+            
             String authority = "ROLE_" + role.toUpperCase();
             
             UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(

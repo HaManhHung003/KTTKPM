@@ -36,7 +36,7 @@ export default function OrderSummary({ showCheckoutButton = true }: OrderSummary
     setTimeout(() => setMessage(null), 3000);
   };
 
-  const shippingFee = 0; // Free shipping for now
+  const shippingFee: number = 0; 
 
   return (
     <div className="bg-card rounded-xl border border-border overflow-hidden sticky top-24">
@@ -45,7 +45,7 @@ export default function OrderSummary({ showCheckoutButton = true }: OrderSummary
       </div>
 
       <div className="p-6 space-y-4">
-        {/* Pricing Rows */}
+        {}
         <div className="flex justify-between text-muted-foreground">
           <span>Tạm tính</span>
           <span className="font-medium text-foreground">
@@ -84,7 +84,7 @@ export default function OrderSummary({ showCheckoutButton = true }: OrderSummary
           </span>
         </div>
 
-        {/* Coupon Section */}
+        {}
         <div className="pt-4">
           <label className="text-sm font-medium text-foreground mb-2 block">
             Mã giảm giá
@@ -131,7 +131,7 @@ export default function OrderSummary({ showCheckoutButton = true }: OrderSummary
           )}
         </div>
 
-        {/* Checkout Button */}
+        {}
         {showCheckoutButton && (
           <Link 
             href="/checkout"

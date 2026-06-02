@@ -25,7 +25,7 @@ export default function RegisterPage() {
   const [loading, setLoading] = useState(false)
   const router = useRouter()
 
-  // Password validation rules
+  
   const passwordRules = [
     { label: 'Ít nhất 8 ký tự', valid: password.length >= 8 },
     { label: 'Có chữ hoa (A-Z)', valid: /[A-Z]/.test(password) },
@@ -39,20 +39,20 @@ export default function RegisterPage() {
     e.preventDefault()
     setError('')
 
-    // Validate phone (Vietnamese format)
+    
     const phoneRegex = /^(0|\+84)[35789][0-9]{8}$/
     if (!phoneRegex.test(phone)) {
       setError('Số điện thoại không hợp lệ (ví dụ: 0912345678)')
       return
     }
 
-    // Validate password
+    
     if (!isPasswordValid) {
       setError('Mật khẩu chưa đạt yêu cầu')
       return
     }
 
-    // Validate confirm password
+    
     if (password !== confirmPassword) {
       setError('Mật khẩu xác nhận không khớp')
       return
@@ -99,7 +99,7 @@ export default function RegisterPage() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background via-background to-muted p-4 py-8">
       <div className="w-full max-w-md">
-        {/* Logo */}
+        {}
         <div className="flex flex-col items-center mb-8">
           <div className="flex items-center gap-2 mb-2">
             <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
@@ -125,7 +125,7 @@ export default function RegisterPage() {
             )}
 
             <form onSubmit={handleRegister} className="space-y-4">
-              {/* Name */}
+              {}
               <div className="space-y-2">
                 <Label htmlFor="name">Họ và tên</Label>
                 <div className="relative">
@@ -142,7 +142,7 @@ export default function RegisterPage() {
                 </div>
               </div>
 
-              {/* Email */}
+              {}
               <div className="space-y-2">
                 <Label htmlFor="email">Email</Label>
                 <div className="relative">
@@ -159,7 +159,7 @@ export default function RegisterPage() {
                 </div>
               </div>
 
-              {/* Phone */}
+              {}
               <div className="space-y-2">
                 <Label htmlFor="phone">Số điện thoại</Label>
                 <div className="relative">
@@ -176,7 +176,7 @@ export default function RegisterPage() {
                 </div>
               </div>
 
-              {/* Password */}
+              {}
               <div className="space-y-2">
                 <Label htmlFor="password">Mật khẩu</Label>
                 <div className="relative">
@@ -199,7 +199,7 @@ export default function RegisterPage() {
                   </button>
                 </div>
 
-                {/* Password strength indicators */}
+                {}
                 {password.length > 0 && (
                   <div className="space-y-1 mt-2">
                     {passwordRules.map((rule, index) => (
@@ -218,7 +218,7 @@ export default function RegisterPage() {
                 )}
               </div>
 
-              {/* Confirm Password */}
+              {}
               <div className="space-y-2">
                 <Label htmlFor="confirmPassword">Xác nhận mật khẩu</Label>
                 <div className="relative">

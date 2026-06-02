@@ -141,7 +141,7 @@ function SuccessContent() {
           </CardFooter>
         </Card>
 
-        {/* Next Steps */}
+        {}
         <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div className="bg-card p-4 rounded-lg border border-border/50 flex gap-4">
             <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0">

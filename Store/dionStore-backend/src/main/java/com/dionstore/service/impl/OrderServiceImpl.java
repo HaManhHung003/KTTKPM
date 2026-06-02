@@ -7,8 +7,11 @@ import com.dionstore.entity.Product;
 import com.dionstore.entity.User;
 import com.dionstore.repository.OrderRepository;
 import com.dionstore.repository.ProductRepository;
-import com.dionstore.service.EmailService;
+import com.dionstore.event.OrderPlacedEvent;
 import com.dionstore.service.OrderService;
+import com.dionstore.service.OrderSagaOrchestrator;
+import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,12 +23,15 @@ public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
     private final ProductRepository productRepository;
-    private final EmailService emailService;
+    private final ApplicationEventPublisher eventPublisher;
+    private final OrderSagaOrchestrator orderSagaOrchestrator;
 
-    public OrderServiceImpl(OrderRepository orderRepository, ProductRepository productRepository, EmailService emailService) {
+    public OrderServiceImpl(OrderRepository orderRepository, ProductRepository productRepository, 
+                            ApplicationEventPublisher eventPublisher, @Lazy OrderSagaOrchestrator orderSagaOrchestrator) {
         this.orderRepository = orderRepository;
         this.productRepository = productRepository;
-        this.emailService = emailService;
+        this.eventPublisher = eventPublisher;
+        this.orderSagaOrchestrator = orderSagaOrchestrator;
     }
 
     @Override
@@ -61,11 +67,8 @@ public class OrderServiceImpl implements OrderService {
         order.setDetails(details);
         Order savedOrder = orderRepository.save(order);
 
-        try {
-            emailService.sendOrderConfirmation(savedOrder);
-        } catch (Exception e) {
-            System.err.println("Failed to send order confirmation email: " + e.getMessage());
-        }
+        
+        eventPublisher.publishEvent(new OrderPlacedEvent(this, savedOrder));
 
         return savedOrder;
     }
@@ -93,11 +96,17 @@ public class OrderServiceImpl implements OrderService {
         Order order = orderRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Order not found"));
         String oldStatus = order.getStatus();
+
         
-        boolean isNewStatusActive = "confirmed".equalsIgnoreCase(status) || "shipping".equalsIgnoreCase(status) || "completed".equalsIgnoreCase(status);
+        if ("confirmed".equalsIgnoreCase(status) && !"confirmed".equalsIgnoreCase(oldStatus)) {
+            orderSagaOrchestrator.confirmOrderSaga(order);
+            return order;
+        }
+        
+        boolean isNewStatusActive = "shipping".equalsIgnoreCase(status) || "completed".equalsIgnoreCase(status);
         boolean isOldStatusActive = "confirmed".equalsIgnoreCase(oldStatus) || "shipping".equalsIgnoreCase(oldStatus) || "completed".equalsIgnoreCase(oldStatus);
 
-        // Nếu chuyển từ trạng thái chưa trừ (pending) sang trạng thái được duyệt (confirmed/shipping/completed) thì tiến hành trừ kho
+        
         if (isNewStatusActive && !isOldStatusActive) {
             for (OrderDetail detail : order.getDetails()) {
                 Product product = detail.getProduct();
@@ -111,7 +120,7 @@ public class OrderServiceImpl implements OrderService {
             }
         }
 
-        // Nếu chuyển từ trạng thái đã duyệt (đã trừ kho) sang hủy (cancelled) thì tiến hành hoàn lại kho
+        
         if ("cancelled".equalsIgnoreCase(status) && isOldStatusActive) {
             for (OrderDetail detail : order.getDetails()) {
                 Product product = detail.getProduct();

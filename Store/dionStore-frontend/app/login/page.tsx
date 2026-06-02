@@ -56,7 +56,7 @@ function LoginForm() {
       Cookies.set('accessToken', response.data.accessToken, { expires: 1 / 96, ...secureCookieOptions })
       Cookies.set('refreshToken', response.data.refreshToken, { expires: 7, ...secureCookieOptions })
 
-      // Redirect theo role: admin → /admin, customer → from param hoặc /
+      
       const userRole = response.data.user?.role
       if (userRole === 'admin') {
         router.push('/admin')
@@ -78,7 +78,7 @@ function LoginForm() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-background via-background to-muted p-4">
       <div className="w-full max-w-md">
-        {/* Logo */}
+        {}
         <div className="flex flex-col items-center mb-8">
           <div className="flex items-center gap-2 mb-2">
             <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">

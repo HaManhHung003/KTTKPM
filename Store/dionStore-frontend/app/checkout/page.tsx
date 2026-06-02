@@ -23,7 +23,7 @@ export default function CheckoutPage() {
   const [submitting, setSubmitting] = useState(false);
   const [user, setUser] = useState<any>(null);
   
-  // Form state
+  
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -51,7 +51,7 @@ export default function CheckoutPage() {
         });
       } catch (err) {
         console.error('Error fetching user info:', err);
-        // If token is invalid, redirect to login
+        
         Cookies.remove('accessToken');
         router.push('/login?from=/checkout');
       } finally {
@@ -117,7 +117,7 @@ export default function CheckoutPage() {
 
   return (
     <div className="min-h-screen bg-muted/30">
-      {/* Header */}
+      {}
       <header className="bg-card border-b border-border sticky top-0 z-40">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
           <div className="flex items-center justify-between">
@@ -129,7 +129,7 @@ export default function CheckoutPage() {
               <ShoppingBag className="text-primary" size={24} />
               <span className="text-xl font-bold">dionStore</span>
             </div>
-            <div className="w-20"></div> {/* Spacer */}
+            <div className="w-20"></div> {}
           </div>
         </div>
       </header>
@@ -138,7 +138,7 @@ export default function CheckoutPage() {
         <h1 className="text-3xl font-bold mb-8">Thanh toán</h1>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-          {/* Left Column: Form */}
+          {}
           <div className="lg:col-span-7 space-y-6">
             <Card className="border-border/50 shadow-sm">
               <CardHeader className="flex flex-row items-center gap-2">
@@ -223,7 +223,7 @@ export default function CheckoutPage() {
             </Card>
           </div>
 
-          {/* Right Column: Summary */}
+          {}
           <div className="lg:col-span-5">
             <Card className="border-border/50 shadow-md sticky top-24">
               <CardHeader>
@@ -233,7 +233,7 @@ export default function CheckoutPage() {
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
-                {/* Items List */}
+                {}
                 <div className="max-h-[300px] overflow-y-auto pr-2 space-y-4 custom-scrollbar">
                   {items.map((item) => (
                     <div key={item.id} className="flex gap-3">

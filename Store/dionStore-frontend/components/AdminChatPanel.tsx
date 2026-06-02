@@ -27,7 +27,7 @@ export default function AdminChatPanel() {
   const [me, setMe] = useState<User | null>(null);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
 
-  // Initial load
+  
   useEffect(() => {
     api.get<User>('/auth/me').then(res => {
       setMe(res.data);
@@ -44,14 +44,14 @@ export default function AdminChatPanel() {
     }).catch(console.error);
   };
 
-  // Connect STOMP for selected user
+  
   useEffect(() => {
     if (!selectedUserId) {
       setMessages([]);
       return;
     }
 
-    // Load history
+    
     api.get<ChatMessage[]>(`/chat/history/${selectedUserId}`).then(res => {
       setMessages(res.data);
       setTimeout(() => {
@@ -61,7 +61,7 @@ export default function AdminChatPanel() {
       }, 50);
     });
 
-    // Connect and subscribe to that user's topic
+    
     connectChat(
       selectedUserId,
       (msg) => {
@@ -97,7 +97,7 @@ export default function AdminChatPanel() {
   return (
     <Card className="flex flex-row p-0 gap-0 h-[calc(100vh-140px)] w-full overflow-hidden rounded-[24px] border border-white/20 shadow-2xl bg-[#F8FAFC]/50 backdrop-blur-2xl min-h-0">
       
-      {/* ── Sidebar - Active Chats ── */}
+      {}
       <div className="w-1/3 md:w-[320px] bg-white/60 border-r border-gray-200/50 flex flex-col min-h-0 shrink-0 relative z-10 backdrop-blur-xl">
         <div className="p-6 pb-4 shrink-0">
           <h3 className="font-bold text-xl text-gray-800 tracking-tight flex items-center gap-2">
@@ -148,11 +148,11 @@ export default function AdminChatPanel() {
         </div>
       </div>
 
-      {/* ── Main Chat Area ── */}
+      {}
       <div className="flex-1 flex flex-col bg-transparent min-w-0 min-h-0 relative">
         {selectedUserId ? (
           <>
-            {/* Chat Header */}
+            {}
             <div className="px-6 py-4 flex items-center justify-between bg-white/40 backdrop-blur-md border-b border-white/50 shrink-0 z-10">
               <div className="flex items-center gap-4">
                 <div className="w-12 h-12 rounded-full bg-gradient-to-br from-indigo-500 to-purple-500 flex items-center justify-center shrink-0 shadow-md ring-4 ring-white/50">
@@ -181,7 +181,7 @@ export default function AdminChatPanel() {
               </div>
             </div>
 
-            {/* Chat Messages */}
+            {}
             <div ref={scrollContainerRef} className="flex-1 overflow-y-auto p-6 space-y-5 min-h-0 custom-scrollbar relative z-0">
               {messages.map((msg, idx) => {
                 const isAdmin = msg.senderRole === 'admin';
@@ -210,7 +210,7 @@ export default function AdminChatPanel() {
               })}
             </div>
 
-            {/* Chat Input */}
+            {}
             <div className="p-4 bg-white/40 backdrop-blur-md shrink-0 border-t border-white/50">
               <form onSubmit={handleSend} className="max-w-4xl mx-auto flex items-end gap-3 bg-white p-2 rounded-[24px] shadow-sm border border-gray-100 focus-within:ring-2 focus-within:ring-indigo-100 focus-within:border-indigo-300 transition-all">
                 <input

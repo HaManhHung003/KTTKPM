@@ -15,17 +15,17 @@ export default function CartDrawer({ setIsOpen }: CartDrawerProps) {
 
   return (
     <>
-      {/* Drawer Overlay */}
+      {}
       <div
         className="fixed inset-0 bg-black/50 z-40 transition-opacity"
         onClick={() => setIsOpen(false)}
       />
 
-      {/* Drawer */}
+      {}
       <div
         className="fixed right-0 top-0 h-full w-full max-w-md bg-card border-l border-border shadow-lg z-50 transition-transform duration-300 overflow-y-auto translate-x-0"
       >
-        {/* Header */}
+        {}
         <div className="sticky top-0 bg-card border-b border-border p-4 flex items-center justify-between">
           <h2 className="text-lg font-bold text-foreground flex items-center gap-2">
             <ShoppingCart size={20} />
@@ -40,7 +40,7 @@ export default function CartDrawer({ setIsOpen }: CartDrawerProps) {
           </button>
         </div>
 
-        {/* Cart Items */}
+        {}
         {items.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-64 text-center px-4">
             <ShoppingCart size={48} className="text-muted-foreground mb-4" />
@@ -61,7 +61,7 @@ export default function CartDrawer({ setIsOpen }: CartDrawerProps) {
               ))}
             </div>
 
-            {/* Summary */}
+            {}
             <div className="sticky bottom-0 bg-card border-t border-border p-4 space-y-3">
               <div className="space-y-2">
                 <div className="flex justify-between text-sm">
@@ -82,7 +82,7 @@ export default function CartDrawer({ setIsOpen }: CartDrawerProps) {
                 </div>
               </div>
 
-              {/* Buttons */}
+              {}
               <div className="space-y-2">
                 <Link
                   href="/cart"

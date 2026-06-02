@@ -44,7 +44,7 @@ public class User {
     @Column(name = "lock_until")
     private LocalDateTime lockUntil;
 
-    // Convenience: expose role as string for JSON
+    
     public String getRoleString() {
         return role != null ? role.name() : null;
     }

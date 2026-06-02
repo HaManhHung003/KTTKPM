@@ -39,7 +39,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const [discountAmount, setDiscountAmount] = useState(0);
   const [isHydrated, setIsHydrated] = useState(false);
 
-  // Load cart from localStorage on mount
+  
   useEffect(() => {
     const savedCart = localStorage.getItem('dion-cart');
     const savedCoupon = localStorage.getItem('dion-coupon');
@@ -58,14 +58,14 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     setIsHydrated(true);
   }, []);
 
-  // Save cart to localStorage whenever it changes
+  
   useEffect(() => {
     if (isHydrated) {
       localStorage.setItem('dion-cart', JSON.stringify(items));
     }
   }, [items, isHydrated]);
 
-  // Save coupon to localStorage
+  
   useEffect(() => {
     if (isHydrated) {
       if (couponCode) {
@@ -76,7 +76,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     }
   }, [couponCode, isHydrated]);
 
-  // Save discount to localStorage
+  
   useEffect(() => {
     if (isHydrated) {
       localStorage.setItem('dion-discount', discountAmount.toString());
@@ -125,11 +125,11 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     const discountValue = COUPON_CODES[upperCode];
     let calculatedDiscount = 0;
 
-    // If discount is a percentage
+    
     if (discountValue < 100) {
       calculatedDiscount = (subtotal * discountValue) / 100;
     } else {
-      // If discount is a fixed amount
+      
       calculatedDiscount = discountValue;
     }
 
