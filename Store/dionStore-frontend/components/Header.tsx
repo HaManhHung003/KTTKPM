@@ -55,32 +55,41 @@ export default function Header() {
 
   return (
     <>
-      <header className="bg-white border-b border-border sticky top-0 z-40">
-        <div className="max-w-7xl mx-auto px-4 py-4">
+      <header className="bg-white border-b border-border sticky top-0 z-40 shadow-sm">
+        <div className="max-w-7xl mx-auto px-4 py-3">
           <div className="flex items-center justify-between gap-6">
-            <Link href="/" className="flex-shrink-0">
-              <h1 className="text-2xl font-bold text-primary">dionStore</h1>
+
+            <Link href="/" className="flex-shrink-0 flex items-center gap-2 group">
+              <div className="w-9 h-9 rounded-full bg-primary flex items-center justify-center text-white text-lg font-bold shadow-md group-hover:scale-105 transition-transform">
+                🐻
+              </div>
+              <div className="flex flex-col leading-tight">
+                <span className="text-xl font-extrabold text-primary tracking-tight">Bear Store</span>
+                <span className="text-[10px] text-muted-foreground font-medium -mt-0.5">Mua sắm thả ga 🛍️</span>
+              </div>
             </Link>
 
             <div className="flex-1 hidden md:flex">
               <div className="relative w-full">
                 <input
                   type="text"
-                  placeholder="Tìm kiếm thiết bị, mỹ phẩm, sách..."
-                  className="w-full px-4 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary bg-secondary"
+                  placeholder="Tìm kiếm sản phẩm yêu thích..."
+                  className="w-full px-4 py-2.5 border border-border rounded-full focus:outline-none focus:ring-2 focus:ring-primary bg-secondary text-sm"
                 />
-                <Search className="absolute right-3 top-2.5 h-5 w-5 text-muted-foreground" />
+                <div className="absolute right-2 top-1.5 bg-primary rounded-full p-1">
+                  <Search className="h-4 w-4 text-white" />
+                </div>
               </div>
             </div>
 
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-3">
               <div className="hidden sm:flex items-center gap-2">
                 {loading ? (
                   <div className="w-5 h-5 border-2 border-primary border-t-transparent rounded-full animate-spin" />
                 ) : user ? (
                   <div className="flex items-center gap-3">
                     <div className="flex flex-col items-end">
-                      <span className="text-sm font-medium text-foreground">
+                      <span className="text-sm font-semibold text-foreground">
                         {user.email.split('@')[0]}
                       </span>
                       <button
@@ -90,7 +99,7 @@ export default function Header() {
                         <LogOut className="h-2 w-2" /> Đăng xuất
                       </button>
                     </div>
-                    <div className="w-8 h-8 bg-secondary rounded-full flex items-center justify-center text-primary border border-border">
+                    <div className="w-9 h-9 bg-primary/10 rounded-full flex items-center justify-center text-primary border-2 border-primary/20">
                       <UserIcon className="h-4 w-4" />
                     </div>
                   </div>
@@ -98,10 +107,10 @@ export default function Header() {
                   <>
                     <UserIcon className="h-5 w-5 text-muted-foreground" />
                     <div className="flex flex-col">
-                      <Link href="/login" className="text-sm font-medium text-foreground hover:text-primary">
+                      <Link href="/login" className="text-sm font-semibold text-foreground hover:text-primary transition-colors">
                         Đăng nhập
                       </Link>
-                      <Link href="/register" className="text-xs text-muted-foreground hover:text-primary">
+                      <Link href="/register" className="text-xs text-muted-foreground hover:text-primary transition-colors">
                         Đăng ký
                       </Link>
                     </div>
@@ -112,34 +121,36 @@ export default function Header() {
               <Button
                 variant="ghost"
                 size="icon"
-                className="relative"
+                className="relative hover:bg-primary/10 rounded-full"
                 onClick={() => setCartOpen(true)}
                 aria-label="Giỏ hàng"
               >
                 <ShoppingCart className="h-5 w-5 text-muted-foreground" />
                 {cartCount > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-bold">
+                  <span className="absolute -top-1 -right-1 bg-primary text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-bold">
                     {cartCount}
                   </span>
                 )}
               </Button>
 
               <Link href={isAdmin ? '/admin/chat' : '/chat'}>
-                <Button variant="ghost" size="icon" className="relative" title="Chat hỗ trợ">
+                <Button variant="ghost" size="icon" className="relative hover:bg-primary/10 rounded-full" title="Chat hỗ trợ">
                   <MessageSquare className="h-5 w-5 text-muted-foreground" />
                 </Button>
               </Link>
             </div>
           </div>
 
-          <div className="md:hidden mt-4">
+          <div className="md:hidden mt-3">
             <div className="relative w-full">
               <input
                 type="text"
-                placeholder="Tìm kiếm..."
-                className="w-full px-4 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary bg-secondary"
+                placeholder="Tìm kiếm sản phẩm..."
+                className="w-full px-4 py-2.5 border border-border rounded-full focus:outline-none focus:ring-2 focus:ring-primary bg-secondary text-sm"
               />
-              <Search className="absolute right-3 top-2.5 h-5 w-5 text-muted-foreground" />
+              <div className="absolute right-2 top-1.5 bg-primary rounded-full p-1">
+                <Search className="h-4 w-4 text-white" />
+              </div>
             </div>
           </div>
         </div>

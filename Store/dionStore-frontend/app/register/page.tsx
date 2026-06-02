@@ -105,7 +105,7 @@ export default function RegisterPage() {
             <div className="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
               <ShoppingBag className="w-6 h-6 text-primary-foreground" />
             </div>
-            <span className="text-2xl font-bold text-foreground">DionStore</span>
+            <span className="text-2xl font-bold text-foreground">Bear Store 🐻</span>
           </div>
           <p className="text-muted-foreground text-sm">Mua sắm thông minh, sống chất lượng</p>
         </div>
@@ -113,7 +113,7 @@ export default function RegisterPage() {
         <Card className="border-border/50 shadow-lg">
           <CardHeader className="text-center pb-4">
             <CardTitle className="text-2xl font-semibold">Tạo tài khoản</CardTitle>
-            <CardDescription>Tham gia DionStore ngay hôm nay</CardDescription>
+            <CardDescription>Tham gia Bear Store ngay hôm nay</CardDescription>
           </CardHeader>
 
           <CardContent className="space-y-4">

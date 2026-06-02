@@ -18,7 +18,7 @@ export default function CategorySection() {
     const fetchCategories = async () => {
       try {
         const { data } = await api.get<Category[]>('/categories')
-        setCategories(data.slice(0, 4))
+        setCategories(data.slice(0, 6))
       } catch (error) {
         console.error('Error fetching categories:', error)
       }
@@ -31,8 +31,10 @@ export default function CategorySection() {
     'bg-pink-100 text-pink-600',
     'bg-purple-100 text-purple-600',
     'bg-green-100 text-green-600',
+    'bg-orange-100 text-orange-600',
+    'bg-yellow-100 text-yellow-700',
   ]
-  const icons = [Laptop, Sparkles, Shirt, Book, Package]
+  const icons = [Laptop, Sparkles, Shirt, Book, Package, Sparkles]
 
   return (
     <div className="mb-12">
@@ -42,7 +44,7 @@ export default function CategorySection() {
           Xem tất cả →
         </Link>
       </div>
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-3 md:grid-cols-6 gap-4">
         {categories.map((category, index) => {
           const Icon = icons[index % icons.length]
           const colorClass = colors[index % colors.length]

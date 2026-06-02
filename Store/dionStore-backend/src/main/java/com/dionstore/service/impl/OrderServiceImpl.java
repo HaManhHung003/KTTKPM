@@ -10,6 +10,7 @@ import com.dionstore.repository.ProductRepository;
 import com.dionstore.event.OrderPlacedEvent;
 import com.dionstore.service.OrderService;
 import com.dionstore.service.OrderSagaOrchestrator;
+import com.dionstore.service.ProductService;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
@@ -25,13 +26,16 @@ public class OrderServiceImpl implements OrderService {
     private final ProductRepository productRepository;
     private final ApplicationEventPublisher eventPublisher;
     private final OrderSagaOrchestrator orderSagaOrchestrator;
+    private final ProductService productService;
 
-    public OrderServiceImpl(OrderRepository orderRepository, ProductRepository productRepository, 
-                            ApplicationEventPublisher eventPublisher, @Lazy OrderSagaOrchestrator orderSagaOrchestrator) {
+    public OrderServiceImpl(OrderRepository orderRepository, ProductRepository productRepository,
+                            ApplicationEventPublisher eventPublisher, @Lazy OrderSagaOrchestrator orderSagaOrchestrator,
+                            @Lazy ProductService productService) {
         this.orderRepository = orderRepository;
         this.productRepository = productRepository;
         this.eventPublisher = eventPublisher;
         this.orderSagaOrchestrator = orderSagaOrchestrator;
+        this.productService = productService;
     }
 
     @Override
@@ -114,8 +118,8 @@ public class OrderServiceImpl implements OrderService {
                     if (product.getQuantity() < detail.getQuantity()) {
                         throw new RuntimeException("Không đủ số lượng trong kho cho sản phẩm: " + product.getName());
                     }
-                    product.setQuantity(product.getQuantity() - detail.getQuantity());
-                    productRepository.save(product);
+                    int newQty = product.getQuantity() - detail.getQuantity();
+                    productService.updateProductQuantity(product.getId(), newQty);
                 }
             }
         }
@@ -125,8 +129,8 @@ public class OrderServiceImpl implements OrderService {
             for (OrderDetail detail : order.getDetails()) {
                 Product product = detail.getProduct();
                 if (product != null) {
-                    product.setQuantity(product.getQuantity() + detail.getQuantity());
-                    productRepository.save(product);
+                    int restoredQty = product.getQuantity() + detail.getQuantity();
+                    productService.updateProductQuantity(product.getId(), restoredQty);
                 }
             }
         }

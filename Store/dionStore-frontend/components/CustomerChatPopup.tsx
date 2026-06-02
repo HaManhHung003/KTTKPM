@@ -80,15 +80,15 @@ export default function CustomerChatPopup() {
       >
         <Card className="w-[360px] h-[520px] flex flex-col shadow-2xl border-0 overflow-hidden ring-1 ring-black/5 bg-background/95 backdrop-blur-xl">
           {}
-          <div className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white p-4 pb-6 flex justify-between items-start relative overflow-hidden">
+          <div className="bg-gradient-to-r from-amber-600 to-amber-800 text-white p-4 pb-6 flex justify-between items-start relative overflow-hidden">
             <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-2xl -translate-y-1/2 translate-x-1/3"></div>
             <div className="flex items-center gap-3 relative z-10">
               <div className="w-10 h-10 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center border border-white/20 shadow-inner">
                 <Sparkles className="w-5 h-5 text-yellow-300" />
               </div>
               <div>
-                <h3 className="font-bold text-sm tracking-wide">DionStore Support</h3>
-                <p className="text-xs text-blue-100 flex items-center gap-1 mt-0.5">
+                <h3 className="font-bold text-sm tracking-wide">Bear Store Support</h3>
+                <p className="text-xs text-amber-100 flex items-center gap-1 mt-0.5">
                   <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
                   Chúng tôi luôn sẵn sàng hỗ trợ
                 </p>

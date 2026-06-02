@@ -89,4 +89,15 @@ public class ProductServiceImpl implements ProductService {
         product.setPublished(publish);
         return productRepository.save(product);
     }
+
+    @Override
+    @CacheEvict(value = {"products_all_admin", "products_published", "products_detail", "products_category"}, allEntries = true)
+    public Product updateProductQuantity(Long id, int newQuantity) {
+        System.out.println("Saga/Order: Xóa Cache & Cập nhật số lượng tồn kho sản phẩm ID " + id + " -> " + newQuantity);
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Product not found with id: " + id));
+        product.setQuantity(newQuantity);
+        return productRepository.save(product);
+    }
 }
+

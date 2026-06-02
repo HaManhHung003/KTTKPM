@@ -462,12 +462,12 @@ export default function AdminPage() {
           {}
           <div className="p-6 border-b border-gray-200">
             <div className="flex items-center gap-3">
-              <div className="w-9 h-9 bg-gradient-to-br from-blue-500 to-purple-600 rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/25">
-                <ShoppingBag className="w-5 h-5 text-gray-900" />
+              <div className="w-9 h-9 bg-gradient-to-br from-amber-500 to-amber-600 rounded-xl flex items-center justify-center shadow-lg shadow-amber-500/25">
+                <ShoppingBag className="w-5 h-5 text-white" />
               </div>
               <div>
-                <div className="text-gray-900 font-bold text-sm">DionStore</div>
-                <div className="text-blue-400 text-xs">Admin Panel</div>
+                <div className="text-gray-900 font-bold text-sm">Bear Store 🐻</div>
+                <div className="text-amber-600 text-xs font-semibold">Admin Panel</div>
               </div>
             </div>
           </div>
@@ -568,7 +568,7 @@ export default function AdminPage() {
                  activeTab === 'categories' ? 'Quản lý Danh mục' : 
                  activeTab === 'chat' ? 'Hỗ trợ khách hàng' : 'Quản lý Đơn hàng'}
               </h1>
-              <p className="text-gray-500 text-sm">dionStore Admin Dashboard</p>
+              <p className="text-gray-500 text-sm">Bear Store Admin Dashboard</p>
             </div>
             <button
               onClick={() => { fetchProducts(); fetchCategories(); fetchOrders(); }}

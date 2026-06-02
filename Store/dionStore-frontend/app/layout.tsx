@@ -11,8 +11,8 @@ const _geist = Geist({ subsets: ["latin"] });
 const _geistMono = Geist_Mono({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: 'dionStore - Đại Tiệc Công Nghệ & Đời Sống',
-  description: 'Cửa hàng bán thiết bị điện tử, mỹ phẩm, thời trang và sách chất lượng cao',
+  title: 'Bear Store 🐻 - Mua sắm thả ga, giá hợp lý',
+  description: 'Bear Store - Cửa hàng trực tuyến đáng yêu với hàng ngàn sản phẩm chất lượng cao, giao hàng nhanh toàn quốc.',
   generator: 'v0.app',
   icons: {
     icon: [
